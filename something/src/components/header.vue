@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-		  <el-menu-item index="1">Passages</el-menu-item>
+		  <el-menu-item index="1">Home</el-menu-item>
 		  <el-menu-item index="2">Tips</el-menu-item>
 		  <el-menu-item index="3">Demos</el-menu-item>
         </el-menu>
@@ -19,7 +19,7 @@
       handleSelect(key, keyPath) {
         switch (key){
         	case '1':
-        	this.$router.push({path:'/passage'});
+        	this.$router.push({path:'/home'});
         	break;
         	case '2':
         	this.$router.push({path:'/tips'});

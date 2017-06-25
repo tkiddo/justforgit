@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <headCmp></headCmp>
     <router-view></router-view>
   </div>
 </template>
