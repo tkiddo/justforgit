@@ -25,7 +25,26 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-        
+        switch(key){
+          case '1':
+          this.$router.push({name:'list',params:{class:'html'}});
+          break;
+          case '2':
+          this.$router.push({name:'list',params:{class:'css'}});
+          break;
+          case '3':
+          this.$router.push({name:'list',params:{class:'javascript'}});
+          break;
+          case '4':
+          this.$router.push({name:'list',params:{class:'webtools'}});
+          break;
+          case '5':
+          this.$router.push({name:'list',params:{class:'vue'}});
+          break;
+          case '6':
+          this.$router.push({name:'list',params:{class:'others'}});
+          break;
+        }
       }
     }
   }
