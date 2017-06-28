@@ -1,1 +1,1 @@
-just wtite something once i think .
+a little thinking
