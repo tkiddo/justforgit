@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../v3.0.0/css/ol.css">
+</head>
+<body>
+    <div id="map"></div>
+    
+    <script src="../v3.0.0/build/ol-debug.js"></script>
+    <script src="../v3.0.0/examples/jquery.min.js"></script>
+</body>
+<script>
+    var tiledRaster = new ol.layer.Tile({
+    	source: new ol.source.OSM()
+    });
+    var center = ol.proj.transform([-72.6, 41.7], 'EPSG:4326',
+    	'EPSG:3857');
+    var view = new ol.View({
+    	center: center,
+    	zoom: 12,
+    });
+    var map = new ol.Map({
+    	target: 'map',
+    	layers: [tiledRaster],
+    	view: view
+    });
+
+	var fill = new ol.style.Fill({
+		color: 'rgba(0,0,0,0.2)'
+	});
+	var stroke = new ol.style.Stroke({
+		color: 'rgba(0,0,0,0.4)'
+	});
+	var circle = new ol.style.Circle({
+		radius: 6,
+		fill: fill,
+		stroke: stroke
+	});
+	var vectorStyle = new ol.style.Style({
+		fill: fill,
+		stroke: stroke,
+		image: circle
+	});
+
+	var vectorLoader = function(extent, resolution, projection) {
+		var url = 'http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&' + 'version=1.1.0&request=GetFeature&typename=osm:builtup_area&' + 'outputFormat=text/javascript&format_options=callback:loadFeatures' + '&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+		$.ajax({
+			url: url,
+			dataType: 'jsonp'
+		});
+	};
+	var loadFeatures = function(response) {
+		var features = vectorSource.readFeatures(response);
+		vectorSource.addFeatures(features);
+	};
+
+	var vectorSource = new ol.source.ServerVector({
+		format: new ol.format.GeoJSON(),
+		loader: vectorLoader,
+		strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+			maxZoom: 19
+		})),
+		projection: 'EPSG:3857',
+	});
+	var serverVector = new ol.layer.Vector({
+		source: vectorSource,
+		style: vectorStyle
+	});
+
+	var map = new ol.Map({
+		target: 'map',
+		layers: [tiledRaster, serverVector],
+		view: view
+	});
+
+</script>
+</html>

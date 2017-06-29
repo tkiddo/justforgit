@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../v3.0.0/css/ol.css">
+</head>
+<body>
+    <div id="map"></div>
+    <form>
+    	<label>
+    		<input type="radio" name="measurement" value="Polygon" checked>Area
+    	</label>
+    	<label>
+    		<input type="radio" name="measurement" value="LineString" checked>Distance
+    	</label>
+    </form>
+    <samp id="js-result"></samp>
+    <script src="../v3.0.0/build/ol-debug.js"></script>
+    <script src="../v3.0.0/examples/jquery.min.js"></script>
+</body>
+<script>
+    var vectorLayer = new ol.layer.Vector({
+    	source:new ol.source.Vector()
+    });
+    var map = new ol.Map({
+    	view:new ol.View({
+    		zoom:15,
+    		center:[-13610530,4555374]
+    	}),
+    	target:'map',
+    	layers:[
+    	new ol.layer.Tile({
+    		source:new ol.source.Stamen({
+    			layer:'terrain'
+    		})
+    	}),vectorLayer
+    	]
+    });
+
+    var measurementRadios = $('[type=radio]');
+    var resultElement = $('#js-result');
+    var measuringTool;
+
+    var enableMeasuringTool = function () {
+    	map.removeInteraction(measuringTool);
+
+    	var geometryType = measurementRadios.filter(':checked').val();
+    	var html = geometryType === 'Polygon'?'<sup>2</sup>':'';
+    	measuringTool = new ol.interaction.Draw({
+    		type:geometryType,
+    		source:vectorLayer.getSource()
+    	});
+
+    	measuringTool.on('drawstart',function(event){
+    		vectorLayer.getSource().clear();
+
+    		event.feature.on('change',function(event){
+    			var measurement = geometryType === 'Polygon'?event.target.getGeometry().getArea():event.target.getGeometry().getLength();
+
+    			var measurementFormatted = measurement >100?(measurement/1000).toFixed(2)+'km':measurement.toFixed(2)+'m';
+
+    			resultElement.html(measurementFormatted+html)
+    		});
+    	});
+    	map.addInteraction(measuringTool)
+    };
+
+    measurementRadios.on('change',enableMeasuringTool);
+    enableMeasuringTool();
+
+</script>
+</html>
