@@ -1,6 +1,8 @@
 <template>
 <div>
-  <div id="map"></div>
+  <div id="map">
+  	<div v-html='toolTip'></div>
+  </div>
   <el-button @click='zoomIn'>zoomIn</el-button>
   <el-button @click='zoomOut'>zoomOut</el-button>
   <el-button @click='flyLocate(city[0].coords)'>fly to {{city[0].text}}</el-button>
@@ -31,7 +33,8 @@ export default {
 			  {value:'length',label:'Length'},
 			  {value:'area',label:'Area'}
 			],
-			measureType:''
+			measureType:'',
+			toolTip:''
 		}
 
 	},
@@ -152,6 +155,7 @@ export default {
 				helpTooltip.setPosition(evt.coordinate);//帮助信息位置
 
 			};
+			map.on('pointermove', pointerMoveHandler); //地图容器绑定鼠标移动事件，动态显示帮助提示框内容
             let draw;
 			//交互绘制控件函数
 			function addInteraction() {
@@ -161,7 +165,7 @@ export default {
 					type: /** @type {ol.geom.GeometryType} */ (type), //几何图形类型
 					style: new ol.style.Style({ //绘制几何图形的样式
 						fill: new ol.style.Fill({
-							color: 'rgba(255, 255, 255, 0.2)'
+							color: 'rgba(255, 255, 255, 0.5)'
 						}),
 						stroke: new ol.style.Stroke({
 							color: 'rgba(0, 0, 0, 0.5)',
@@ -191,11 +195,11 @@ export default {
 						sketch = evt.feature; //绘制的要素
 
 						/** @type {ol.Coordinate|undefined} */
-						var tooltipCoord = evt.coordinate; // 绘制的坐标
+						let tooltipCoord = evt.coordinate; // 绘制的坐标
 						//绑定change事件，根据绘制几何类型得到测量长度值或面积值，并将其设置到测量工具提示框中显示
 						listener = sketch.getGeometry().on('change', function(evt) {
-							var geom = evt.target; //绘制几何要素
-							var output;
+							let geom = evt.target; //绘制几何要素
+							let output;
 							if (geom instanceof ol.geom.Polygon) {
 								output = formatArea( /** @type {ol.geom.Polygon} */ (geom)); //面积值
 								tooltipCoord = geom.getInteriorPoint().getCoordinates(); //坐标
@@ -256,12 +260,11 @@ export default {
 			}
 
 			switch (_type) {
-
 				case 'length':
 					var formatLength = function(line) {
 						let length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
 
-						var output;
+						let output;
 						if (length > 100) {
 							output = (Math.round(length / 1000 * 100) / 100) + ' ' + 'km'; //换算成KM单位
 						} else {
@@ -272,10 +275,8 @@ export default {
 					break;
 				case 'area':
 					var formatArea = function(polygon) {
-
 						let area = polygon.getArea(); //直接获取多边形的面积
-
-						var output;
+						let output;
 						if (area > 10000) {
 							output = (Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>'; //换算成KM单位
 						} else {
@@ -292,5 +293,39 @@ export default {
 </script>
 
 <style scoped>
-  
+  /**
+        * 提示框的样式信息
+        */
+        .tooltip {
+            position : relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+        .tooltip-measure {
+            opacity: 1;
+            font-weight: bold;
+        }
+        .tooltip-static {
+            background-color: #ffcc33;
+            color: black;
+            border: 1px solid white;
+        }
+        .tooltip-measure:before,
+        .tooltip-static:before {
+            border-top: 6px solid rgba(0, 0, 0, 0.5);
+            border-right: 6px solid transparent;
+            border-left: 6px solid transparent;
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            margin-left: -7px;
+            left: 50%;
+        }
+        .tooltip-static:before {
+            border-top-color: #ffcc33;
+        }
 </style>
