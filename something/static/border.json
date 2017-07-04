@@ -1,0 +1,15 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [120, 30],
+            [120, 31],
+            [121, 31],
+            [121, 30]
+        ]
+    },
+    "properties": {
+        "name": "test"
+    }
+}

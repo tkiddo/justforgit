@@ -11,6 +11,7 @@
     <el-button @click='flyLocate(city[1].coords)'>fly to {{city[1].text}}</el-button>
     <el-button @click='addMarks'>addMarks</el-button>
     <el-button @click='rectangular'>rectangular</el-button>
+    <el-button @click='setBorder'>setBorder</el-button>
     <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
       <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
       </el-option>
@@ -71,7 +72,7 @@ export default {
         }).extend([
           new ol.control.FullScreen(),//全屏控件
           new ol.control.MousePosition({//鼠标位置控件
-            coordinateFormat: ol.coordinate.createStringXY(4),
+            coordinateFormat: ol.coordinate.createStringXY(2),
             projection: 'EPSG:4326',
             className: 'custom-mouse-position',
             target: document.getElementById('mouse-position')
@@ -352,6 +353,51 @@ export default {
       })
       map.addLayer(layer);
       map.addInteraction(draw);
+    },
+    setBorder() {
+      let map = this.map;
+      //创建鼠标移动到热区样式
+      let style = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'red',
+          width: 2
+        }),
+        fill: new ol.style.Fill({
+          color: 'rgba(255,255,255,0.6)'
+        }),
+        text: new ol.style.Text({
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000'
+          }),
+          stroke: new ol.style.Stroke({
+            color: 'green',
+            width: 3
+          })
+        })
+      });
+      let vectorLayer = new ol.layer.Vector({
+        style:style
+      });
+      let features;
+      let geojsonObject = {
+        "type": "FeatureCollection",
+        "features": []
+      };
+      this.$http.get('../../static/border.json').then(
+        (response) => {
+          features = response.data;
+          geojsonObject.features.push(features);
+          vectorLayer.setSource(new ol.source.Vector({
+            features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+          }));
+          map.addLayer(vectorLayer);
+        }, (err) => {
+          console.log(err)
+        }
+      );
+
+
     }
   }
 };
