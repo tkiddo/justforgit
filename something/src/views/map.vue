@@ -1,13 +1,16 @@
 <template>
   <div>
     <div id="map">
-      <div v-html='toolTip'></div>
+      <div id="mouse-position" class="mouse-position-wrapper">
+        <div class="custom-mouse-position"></div>
+      </div>
     </div>
     <el-button @click='zoomIn'>zoomIn</el-button>
     <el-button @click='zoomOut'>zoomOut</el-button>
     <el-button @click='flyLocate(city[0].coords)'>fly to {{city[0].text}}</el-button>
     <el-button @click='flyLocate(city[1].coords)'>fly to {{city[1].text}}</el-button>
     <el-button @click='addMarks'>addMarks</el-button>
+    <el-button @click='rectangular'>rectangular</el-button>
     <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
       <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
       </el-option>
@@ -53,7 +56,7 @@ export default {
         center: [12950000, 4860000],
         minZoom: 6,
         maxZoom: 12,
-        rotation: Math.PI / 6,
+        // rotation: Math.PI / 6,
         zoom: 8
       });
       this.map = new ol.Map({
@@ -65,7 +68,22 @@ export default {
           attributionOptions: ({
             collapsible: false
           })
-        }),
+        }).extend([
+          new ol.control.FullScreen(),//全屏控件
+          new ol.control.MousePosition({//鼠标位置控件
+            coordinateFormat: ol.coordinate.createStringXY(4),
+            projection: 'EPSG:4326',
+            className: 'custom-mouse-position',
+            target: document.getElementById('mouse-position')
+          }),
+          new ol.control.ScaleLine(),//比例尺
+          new ol.control.ZoomSlider({}),//缩放条
+          new ol.control.ZoomToExtent({})//缩放到图层
+        ]),
+        interaction: ol.interaction.defaults().extend([
+          new ol.interaction.DragRotateAndZoom()
+
+        ]),
         view: this.view
       });
     },
@@ -292,9 +310,49 @@ export default {
       addInteraction(); //调用加载绘制交互控件方法，添加绘图进行测量
     },
     addMarks() {
-      
-       
+
+
     },
+    rectangular() {
+      let map = this.map;
+      let source = new ol.source.Vector();
+      let layer = new ol.layer.Vector({
+        source
+      });
+      let draw = new ol.interaction.Draw({
+        source: source,
+        type: 'LineString',
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#ffcc33',
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        }),
+        maxPoints: 2,
+        geometryFunction: function (coordinates, geometry) {
+          if (!geometry) {
+            geometry = new ol.geom.Polygon(null);
+          }
+          var start = coordinates[0];
+          var end = coordinates[1];
+          geometry.setCoordinates([
+            [start, [start[0], end[1]], end, [end[0], start[1]], start]
+          ]);
+          return geometry;
+        }
+      })
+      map.addLayer(layer);
+      map.addInteraction(draw);
+    }
   }
 };
 </script>
@@ -339,5 +397,24 @@ export default {
 
 .tooltip-static:before {
   border-top-color: #ffcc33;
+}
+
+#map {
+  position: relative
+}
+
+.mouse-position-wrapper {
+  width: 150px;
+  height: 29px;
+  color: #FFFFFF;
+  background: #111;
+  opacity: 0.5;
+  position: absolute;
+  left: 150px;
+  bottom: 6px;
+  z-index: 9999;
+  border-radius: 5px;
+  line-height: 29px;
+  text-align: center;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-       <div v-for='item in arr' class="item flex j-center a-center" @click='goRouter(item.path)'>
+       <div v-for='item in arr' class='item flex j-center a-center' @click='goRouter(item.path)'>
          <img :src="item.img" alt="">
          <span class="title">{{item.title}}</span>
          <span class="text">{{item.text}}</span>
