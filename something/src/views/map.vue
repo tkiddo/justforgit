@@ -1,10 +1,12 @@
 <template>
   <div>
     <div id="map">
+      <div class="css-animation" ref="css_animation" v-show="isActive"></div> 
       <div id="mouse-position" class="mouse-position-wrapper">
         <div class="custom-mouse-position"></div>
       </div>
     </div>
+    <div class="menu">
     <el-button @click='zoomIn'>zoomIn</el-button>
     <el-button @click='zoomOut'>zoomOut</el-button>
     <el-button @click='flyLocate(city[0].coords)'>fly to {{city[0].text}}</el-button>
@@ -12,10 +14,12 @@
     <el-button @click='addMarks'>addMarks</el-button>
     <el-button @click='rectangular'>rectangular</el-button>
     <el-button @click='setBorder'>setBorder</el-button>
+    <el-button @click='warning'>warning</el-button>
     <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
       <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
       </el-option>
     </el-select>
+    </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -41,7 +45,7 @@ export default {
         label: 'Area'
       }],
       measureType: '',
-      toolTip: ''
+      isActive:false
     }
 
   },
@@ -398,16 +402,35 @@ export default {
       );
 
 
+    },
+    warning(){
+      let point_div = this.$refs.css_animation;
+      let point_overlay = new ol.Overlay({
+        element:point_div,
+        positioning:'center-center'
+      });
+      let map = this.map;
+      map.addOverlay(point_overlay);
+      let position = ol.proj.transform([116.38,39.91],'EPSG:4326', 'EPSG:3857');
+      point_overlay.setPosition(position);
+      this.isActive = true;
     }
   }
 };
 </script>
 
 <style scoped>
-/**
-        * 提示框的样式信息
-        */
-
+#map{
+  position: absolute;
+  top: 50px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.menu{
+  padding:7px 0;
+}
+/* 提示框的样式信息*/
 .tooltip {
   position: relative;
   background: rgba(0, 0, 0, 0.5);
@@ -445,10 +468,6 @@ export default {
   border-top-color: #ffcc33;
 }
 
-#map {
-  position: relative
-}
-
 .mouse-position-wrapper {
   width: 150px;
   height: 29px;
@@ -463,4 +482,20 @@ export default {
   line-height: 29px;
   text-align: center;
 }
+.css-animation{
+        height:50px; 
+        width:50px;
+        border-radius: 25px; 
+        background: rgba(255, 0, 0, 0.9);
+        transform: scale(0);
+        animation: myfirst 3s;      
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes myfirst{
+        to{
+            transform: scale(2);
+            background: rgba(0, 0, 0, 0);
+        }
+    }
 </style>
