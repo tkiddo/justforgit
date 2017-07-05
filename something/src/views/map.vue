@@ -1,24 +1,28 @@
 <template>
   <div>
     <div id="map">
-      <div class="css-animation" ref="css_animation" v-show="isActive"></div> 
+      <div class="css-animation" ref="css_animation" v-show="isActive"></div>
       <div id="mouse-position" class="mouse-position-wrapper">
         <div class="custom-mouse-position"></div>
       </div>
+      <div class="ol-popup" ref="popup">
+        <a href="#" class="ol-popup-closer" ref="popup_closer"></a>
+        <div class="content j-center a-center flex" ref="popup_content"></div>
+      </div>
     </div>
     <div class="menu">
-    <el-button @click='zoomIn'>zoomIn</el-button>
-    <el-button @click='zoomOut'>zoomOut</el-button>
-    <el-button @click='flyLocate(city[0].coords)'>fly to {{city[0].text}}</el-button>
-    <el-button @click='flyLocate(city[1].coords)'>fly to {{city[1].text}}</el-button>
-    <el-button @click='addMarks'>addMarks</el-button>
-    <el-button @click='rectangular'>rectangular</el-button>
-    <el-button @click='setBorder'>setBorder</el-button>
-    <el-button @click='warning'>warning</el-button>
-    <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
-      <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
-      </el-option>
-    </el-select>
+      <el-button @click='zoomIn'>zoomIn</el-button>
+      <el-button @click='zoomOut'>zoomOut</el-button>
+      <el-button @click='flyLocate(city[0].coords)'>fly to {{city[0].text}}</el-button>
+      <el-button @click='flyLocate(city[1].coords)'>fly to {{city[1].text}}</el-button>
+      <el-button @click='addMarks'>addMarks</el-button>
+      <el-button @click='rectangular'>rectangular</el-button>
+      <el-button @click='highLight'>HighLight</el-button>
+      <el-button @click='warning'>warning</el-button>
+      <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
+        <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
     </div>
   </div>
 </template>
@@ -45,7 +49,7 @@ export default {
         label: 'Area'
       }],
       measureType: '',
-      isActive:false
+      isActive: false
     }
 
   },
@@ -59,7 +63,7 @@ export default {
       });
       this.view = new ol.View({
         center: [12950000, 4860000],
-        minZoom: 6,
+        minZoom: 2,
         maxZoom: 12,
         // rotation: Math.PI / 6,
         zoom: 8
@@ -287,7 +291,7 @@ export default {
 
       switch (_type) {
         case 'length':
-          var formatLength = function (line) {
+          let formatLength = function (line) {
             let length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
 
             let output;
@@ -300,7 +304,7 @@ export default {
           };
           break;
         case 'area':
-          var formatArea = function (polygon) {
+          let formatArea = function (polygon) {
             let area = polygon.getArea(); //直接获取多边形的面积
             let output;
             if (area > 10000) {
@@ -347,8 +351,8 @@ export default {
           if (!geometry) {
             geometry = new ol.geom.Polygon(null);
           }
-          var start = coordinates[0];
-          var end = coordinates[1];
+          let start = coordinates[0];
+          let end = coordinates[1];
           geometry.setCoordinates([
             [start, [start[0], end[1]], end, [end[0], start[1]], start]
           ]);
@@ -381,7 +385,7 @@ export default {
         })
       });
       let vectorLayer = new ol.layer.Vector({
-        style:style
+        style: style
       });
       let features;
       let geojsonObject = {
@@ -403,34 +407,162 @@ export default {
 
 
     },
-    warning(){
+    warning() {
       let point_div = this.$refs.css_animation;
       let point_overlay = new ol.Overlay({
-        element:point_div,
-        positioning:'center-center'
+        element: point_div,
+        positioning: 'center-center'
       });
       let map = this.map;
       map.addOverlay(point_overlay);
-      let position = ol.proj.transform([116.38,39.91],'EPSG:4326', 'EPSG:3857');
+      let position = ol.proj.transform([116.38, 39.91], 'EPSG:4326', 'EPSG:3857');
       point_overlay.setPosition(position);
       this.isActive = true;
+    },
+    highLight() {
+      let map = this.map;
+      map.getView().setZoom(3);
+      let highlightStyleCache = {};
+      let highlight;
+
+      /** 
+      * 定义矢量图层 
+      * 其中style是矢量图层的显示样式  
+      */
+      let style = new ol.style.Style({
+        fill: new ol.style.Fill({ //矢量图层填充颜色，以及透明度  
+          color: 'rgba(255, 255, 255, 0)'
+        }),
+        stroke: new ol.style.Stroke({ //边界样式  
+          color: '#319FD3',
+          width: 1
+        }),
+        text: new ol.style.Text({ //文本样式  
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 3
+          })
+        })
+      });
+
+      let vectorLayer = new ol.layer.Vector({ //初始化矢量图层  
+        source: new ol.source.Vector({
+          projection: 'EPSG:3857',
+          url: '../../static/countries.geojson',   //从文件加载边界等地理信息 
+          format: new ol.format.GeoJSON()
+        }),
+        style: function (feature, resolution) {
+          style.getText().setText(resolution < 5000 ? feature.get('name') : '');  //当放大到1:5000分辨率时，显示国家名字  
+          return [style];
+        }
+      });
+      map.addLayer(vectorLayer);
+
+      //当鼠标移动时，高亮相应的区域的函数 
+
+      let featureOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: '#ffd800',
+            width: 2
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(255,255,255,0.6)'
+          }),
+          text: new ol.style.Text({
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({
+              color: '#000'
+            }),
+            stroke: new ol.style.Stroke({
+              color: '#fff',
+              width: 3
+            })
+          })
+        })
+      });
+      map.addLayer(featureOverlay);
+
+      let displayFeatureInfo = function (pixel) {
+        let feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+          return feature;
+        });
+        if (feature !== highlight) {
+          if (highlight) {
+            featureOverlay.getSource().removeFeature(highlight);
+          }
+          if (feature) {
+            featureOverlay.getSource().addFeature(feature);
+          }
+          highlight = feature;
+        }
+
+      };
+
+
+      //鼠标移动的事件  
+
+      map.on('pointermove', function (evt) {
+        if (evt.dragging) {   //如果是拖动地图造成的鼠标移动，则不作处理  
+          return;
+        }
+        let pixel = map.getEventPixel(evt.originalEvent);
+        displayFeatureInfo(pixel);
+      });
+      //地图点击事件
+      let container = this.$refs.popup;
+      let content = this.$refs.popup_content;
+      let closer = this.$refs.popup_closer;
+      let overlay = new ol.Overlay({
+        element: content,
+        position: 'center-center'
+      });
+      map.on('click', function (evt) {
+        let pixel = map.getEventPixel(evt.originalEvent);
+        let feature = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+          return feature;
+        });
+        let coordinate = evt.coordinate;
+        let hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+          coordinate, 'EPSG:3857', 'EPSG:4326'));
+        if (feature !== undefined) {
+          content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code><p>这里属于：' + feature.get('name') + '</p>';
+        }
+        else {
+          content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code><p>这里是大海！</p>';
+        }
+        overlay.setPosition(coordinate);
+        map.addOverlay(overlay);
+      })
     }
+
   }
 };
 </script>
 
 <style scoped>
-#map{
+#map {
   position: absolute;
   top: 50px;
   left: 0;
   bottom: 0;
   right: 0;
 }
-.menu{
-  padding:7px 0;
+
+.menu {
+  padding: 7px 0;
 }
+
+
+
+
 /* 提示框的样式信息*/
+
 .tooltip {
   position: relative;
   background: rgba(0, 0, 0, 0.5);
@@ -482,20 +614,34 @@ export default {
   line-height: 29px;
   text-align: center;
 }
-.css-animation{
-        height:50px; 
-        width:50px;
-        border-radius: 25px; 
-        background: rgba(255, 0, 0, 0.9);
-        transform: scale(0);
-        animation: myfirst 3s;      
-        animation-iteration-count: infinite;
-    }
 
-    @keyframes myfirst{
-        to{
-            transform: scale(2);
-            background: rgba(0, 0, 0, 0);
-        }
-    }
+.ol-popup {
+  position: absolute;
+}
+.content{
+  width: 300px;
+  height:120px;
+  background: #fff;
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 30px;
+  border-radius: 5px;
+}
+
+.css-animation {
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  background: rgba(255, 0, 0, 0.9);
+  transform: scale(0);
+  animation: myfirst 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes myfirst {
+  to {
+    transform: scale(2);
+    background: rgba(0, 0, 0, 0);
+  }
+}
 </style>
