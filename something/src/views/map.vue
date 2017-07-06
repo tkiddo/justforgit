@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+  
     <div id="map" ref="map">
       <div class="css-animation" ref="css_animation" v-show="isActive"></div>
       <div id="mouse-position" class="mouse-position-wrapper">
@@ -54,8 +54,7 @@ export default {
         label: 'Area'
       }],
       measureType: '',
-      isActive: false,
-      isMarked:false
+      isActive: false
     }
 
   },
@@ -294,58 +293,52 @@ export default {
         });
         map.addOverlay(measureTooltip);
       }
+      let formatLength = function (line) {
+        let length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
 
-      switch (_type) {
-        case 'length':
-          let formatLength = function (line) {
-            let length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
+        let output;
+        if (length > 100) {
+          output = (Math.round(length / 1000 * 100) / 100) + ' ' + 'km'; //换算成KM单位
+        } else {
+          output = (Math.round(length * 100) / 100) + ' ' + 'm'; //m为单位
+        }
+        return output; //返回线的长度
+      };
 
-            let output;
-            if (length > 100) {
-              output = (Math.round(length / 1000 * 100) / 100) + ' ' + 'km'; //换算成KM单位
-            } else {
-              output = (Math.round(length * 100) / 100) + ' ' + 'm'; //m为单位
-            }
-            return output; //返回线的长度
-          };
-          break;
-        case 'area':
-          let formatArea = function (polygon) {
-            let area = polygon.getArea(); //直接获取多边形的面积
-            let output;
-            if (area > 10000) {
-              output = (Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>'; //换算成KM单位
-            } else {
-              output = (Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>'; //m为单位
-            }
-            return output; //返回多边形的面积
-          };
-          break;
+      let formatArea = function (polygon) {
+        let area = polygon.getArea(); //直接获取多边形的面积
+        let output;
+        if (area > 10000) {
+          output = (Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>'; //换算成KM单位
+        } else {
+          output = (Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>'; //m为单位
+        }
+        return output; //返回多边形的面积
       };
       addInteraction(); //调用加载绘制交互控件方法，添加绘图进行测量
     },
     addMarks() {
       let map = this.map;
       let overlay = new ol.layer.Vector({
-         source:new ol.source.Vector()
+        source: new ol.source.Vector()
       });
       map.addLayer(overlay);
-      map.on('click',function(evt){
+      map.on('click', function (evt) {
         let mark = new ol.Feature({
-          geometry:new ol.geom.Point(evt.coordinate)
+          geometry: new ol.geom.Point(evt.coordinate)
         });
         let hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
           evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
         mark.setStyle(new ol.style.Style({
           image: new ol.style.Icon({
-            src:'../../static/mark.png'
+            src: '../../static/mark.png'
           }),
-          text:new ol.style.Text({
-            fill:new ol.style.Fill({
-              color:'blue'
+          text: new ol.style.Text({
+            fill: new ol.style.Fill({
+              color: 'blue'
             }),
-            text:hdms,
-            offsetY:18
+            text: hdms,
+            offsetY: 18
           })
         }));
         overlay.getSource().addFeature(mark);
@@ -577,22 +570,22 @@ export default {
       let map = this.map;
       let bbox = map.getView().calculateExtent(map.getSize());
       console.log(bbox)
-      let num = ol.proj.transform([bbox[0],bbox[1]], 'EPSG:3857', 'EPSG:4326');
+      let num = ol.proj.transform([bbox[0], bbox[1]], 'EPSG:3857', 'EPSG:4326');
       console.log(num)
     },
-    fitToCD(){
+    fitToCD() {
       let map = this.map;
       let range = [];
-      let min = ol.proj.transform([104,30.6],'EPSG:4326','EPSG:3857');
-      let max = ol.proj.transform([104.12,30.74],'EPSG:4326','EPSG:3857');
+      let min = ol.proj.transform([104, 30.6], 'EPSG:4326', 'EPSG:3857');
+      let max = ol.proj.transform([104.12, 30.74], 'EPSG:4326', 'EPSG:3857');
       //es6 sperad
-      range.push(...min,...max);
+      range.push(...min, ...max);
       console.log(range)
       map.getView().fit(range, map.getSize());
     }
 
   },
-  components:{
+  components: {
     marks
   }
 };
@@ -605,7 +598,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  .marks{
+  .marks {
     position: absolute;
     z-index: 9999;
   }
@@ -614,6 +607,7 @@ export default {
 .menu {
   padding: 7px 0;
 }
+
 
 
 
