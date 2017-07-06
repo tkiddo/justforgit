@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div id="map">
+    
+    <div id="map" ref="map">
       <div class="css-animation" ref="css_animation" v-show="isActive"></div>
       <div id="mouse-position" class="mouse-position-wrapper">
         <div class="custom-mouse-position"></div>
@@ -19,6 +20,9 @@
       <el-button @click='rectangular'>rectangular</el-button>
       <el-button @click='highLight'>HighLight</el-button>
       <el-button @click='warning'>warning</el-button>
+      <el-button @click='reset'>reset</el-button>
+      <el-button @click='fitToCD'>fitToChengdu</el-button>
+      <el-button @click='forTest'>test</el-button>
       <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
         <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
@@ -28,6 +32,7 @@
 </template>
 <script type="text/javascript">
 import ol from 'openlayers'
+import marks from '../components/marks.vue'
 export default {
   data() {
     return {
@@ -49,7 +54,8 @@ export default {
         label: 'Area'
       }],
       measureType: '',
-      isActive: false
+      isActive: false,
+      isMarked:false
     }
 
   },
@@ -319,8 +325,31 @@ export default {
       addInteraction(); //调用加载绘制交互控件方法，添加绘图进行测量
     },
     addMarks() {
-
-
+      let map = this.map;
+      let overlay = new ol.layer.Vector({
+         source:new ol.source.Vector()
+      });
+      map.addLayer(overlay);
+      map.on('click',function(evt){
+        let mark = new ol.Feature({
+          geometry:new ol.geom.Point(evt.coordinate)
+        });
+        let hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+          evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+        mark.setStyle(new ol.style.Style({
+          image: new ol.style.Icon({
+            src:'../../static/mark.png'
+          }),
+          text:new ol.style.Text({
+            fill:new ol.style.Fill({
+              color:'blue'
+            }),
+            text:hdms,
+            offsetY:18
+          })
+        }));
+        overlay.getSource().addFeature(mark);
+      });
     },
     rectangular() {
       let map = this.map;
@@ -539,24 +568,53 @@ export default {
         overlay.setPosition(coordinate);
         map.addOverlay(overlay);
       })
+    },
+    reset() {
+      this.$router.go(0)//刷新页面
+    },
+    forTest() {
+      //地图范围
+      let map = this.map;
+      let bbox = map.getView().calculateExtent(map.getSize());
+      console.log(bbox)
+      let num = ol.proj.transform([bbox[0],bbox[1]], 'EPSG:3857', 'EPSG:4326');
+      console.log(num)
+    },
+    fitToCD(){
+      let map = this.map;
+      let range = [];
+      let min = ol.proj.transform([104,30.6],'EPSG:4326','EPSG:3857');
+      let max = ol.proj.transform([104.12,30.74],'EPSG:4326','EPSG:3857');
+      //es6 sperad
+      range.push(...min,...max);
+      console.log(range)
+      map.getView().fit(range, map.getSize());
     }
 
+  },
+  components:{
+    marks
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #map {
   position: absolute;
   top: 50px;
   left: 0;
   bottom: 0;
   right: 0;
+  .marks{
+    position: absolute;
+    z-index: 9999;
+  }
 }
 
 .menu {
   padding: 7px 0;
 }
+
 
 
 
@@ -618,9 +676,10 @@ export default {
 .ol-popup {
   position: absolute;
 }
-.content{
+
+.content {
   width: 300px;
-  height:120px;
+  height: 120px;
   background: #fff;
   flex-direction: column;
   font-size: 16px;
