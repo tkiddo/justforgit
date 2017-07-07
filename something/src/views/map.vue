@@ -22,6 +22,8 @@
       <el-button @click='warning'>warning</el-button>
       <el-button @click='reset'>reset</el-button>
       <el-button @click='fitToCD'>fitToChengdu</el-button>
+      <el-button @click='styleChange'>selectStyle</el-button>
+      <el-button @click='getCoords'>getCoords</el-button>
       <el-button @click='forTest'>test</el-button>
       <el-select v-model="measureType" placeholder="choose measureOption" @change='measure(measureType)'>
         <el-option v-for="item in measureOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -32,7 +34,6 @@
 </template>
 <script type="text/javascript">
 import ol from 'openlayers'
-import marks from '../components/marks.vue'
 export default {
   data() {
     return {
@@ -582,11 +583,92 @@ export default {
       range.push(...min, ...max);
       console.log(range)
       map.getView().fit(range, map.getSize());
+    },
+    styleChange() {
+      let map = this.map;
+      let layer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 30,
+            fill: new ol.style.Fill({
+              color: 'gold'
+            })
+          })
+        })
+      });
+      let point = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.transform([116, 40], "EPSG:4326", "EPSG:3857"))
+      });
+      // point.setStyle(new ol.style.Style({
+      //   image: new ol.style.Circle({
+      //     radius: 30,
+      //     fill: new ol.style.Fill({
+      //       color: 'gold'
+      //     })
+      //   })
+      // }))
+      layer.getSource().addFeature(point);
+      map.addLayer(layer);
+      let selectClick = new ol.interaction.Select({
+        // condition: ol.events.condition.pointerMove,     // 唯一的不同之处，设置鼠标移到feature上就选取
+        // style: new ol.style.Style({
+        //   image: new ol.style.Circle({
+        //     radius: 10,
+        //     fill: new ol.style.Fill({
+        //       color: 'blue'
+        //     })
+        //   })
+        // })
+      });
+      map.addInteraction(selectClick);
+      selectClick.on('select', function (event) {
+        console.log(event.selected[0])
+        event.selected[0].setStyle(new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+              color: 'red'
+            })
+          })
+        }));
+      })
+    },
+    getCoords(){
+      let map = this.map;
+      let layer = new ol.layer.Vector({
+        source:new ol.source.Vector(),
+        style:new ol.style.Style({
+          stroke:new ol.style.Stroke({
+            color:"red",
+            size:3
+          })
+        })
+      });
+      map.addLayer(layer);
+      let lineDraw = new ol.interaction.Draw({
+        type:'LineString',
+        style:new ol.style.Style({
+          stroke:new ol.style.Stroke({
+            color:'#009933',
+            size:3
+          })
+        }),
+        maxPoints:4,
+        source:layer.getSource()// 注意设置source，这样绘制好的线，就会添加到这个source里
+      });
+      //获取坐标
+      let content = this.$refs.popup_content;
+      lineDraw.on('drawend',function(event){
+          let coords = JSON.stringify(event.feature.getGeometry().getCoordinates());
+          alert(coords)
+      })
+      map.addInteraction(lineDraw)
     }
 
   },
   components: {
-    marks
+
   }
 };
 </script>
@@ -607,6 +689,10 @@ export default {
 .menu {
   padding: 7px 0;
 }
+
+
+
+
 
 
 
