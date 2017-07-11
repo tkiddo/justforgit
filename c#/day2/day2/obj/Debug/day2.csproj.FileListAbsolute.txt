@@ -1,0 +1,8 @@
+F:\c#\day2\day2\obj\Debug\day2.csprojResolveAssemblyReference.cache
+F:\c#\day2\day2\obj\Debug\day2.Form1.resources
+F:\c#\day2\day2\obj\Debug\day2.Properties.Resources.resources
+F:\c#\day2\day2\obj\Debug\day2.csproj.GenerateResource.Cache
+F:\c#\day2\day2\bin\Debug\day2.exe
+F:\c#\day2\day2\bin\Debug\day2.pdb
+F:\c#\day2\day2\obj\Debug\day2.exe
+F:\c#\day2\day2\obj\Debug\day2.pdb
