@@ -6,3 +6,5 @@ F:\c#\contacts\contacts\obj\Debug\contacts.Properties.Resources.resources
 F:\c#\contacts\contacts\obj\Debug\contacts.csproj.GenerateResource.Cache
 F:\c#\contacts\contacts\obj\Debug\contacts.exe
 F:\c#\contacts\contacts\obj\Debug\contacts.pdb
+F:\gitfile\c#\contacts\contacts\obj\Debug\contacts.exe
+F:\gitfile\c#\contacts\contacts\obj\Debug\contacts.pdb
