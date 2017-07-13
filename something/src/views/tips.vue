@@ -2,6 +2,7 @@
     <div>
         <el-button @click="test">test</el-button>
         <el-button @click="stack">stack</el-button>
+        <el-button @click="getApi">getApi</el-button>
     </div>
 </template>
 
@@ -82,6 +83,15 @@ export default {
                     console.log(items.toString());
                 };
             }
+        },
+        getApi(){
+           this.$http.get("http://localhost:56957/api/Products/GetProduct?id=2").then(
+               (response)=>{
+                   console.log(response)
+               },(err)=>{
+                   console.log(err);
+               }
+           )
         }
     }
 }
