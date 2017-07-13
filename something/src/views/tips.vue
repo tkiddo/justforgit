@@ -85,9 +85,9 @@ export default {
             }
         },
         getApi(){
-           this.$http.get("http://localhost:56957/api/Products/GetProduct?id=2").then(
+           this.$axios.get("http://localhost:61848/api/Products").then(
                (response)=>{
-                   console.log(response)
+                   console.log(response.data)
                },(err)=>{
                    console.log(err);
                }
