@@ -1,17 +1,41 @@
 <template>
     <div>
-        <el-button @click="test">test</el-button>
+        <!-- <el-button @click="test">test</el-button>
         <el-button @click="stack">stack</el-button>
-        <el-button @click="getApi">getApi</el-button>
+        <el-button @click="getApi">getApi</el-button> -->
+        <!-- <el-button @click="testVuex">testVuex</el-button> -->
+        <!-- <div>{{count}}</div> -->
+        <cTable class="table"></cTable>
+        <c-form></c-form>
+        <div>Count:{{listCount}}</div>
+        <div>{{text}}</div>
     </div>
 </template>
 
 <script>
+import cForm from "../components/form.vue"
+import cTable from "../components/table.vue"
+import {mapActions} from "vuex"
+import {mapState} from "vuex"
+import {mapGetters} from "vuex"
 export default {
     data() {
         return {
 
         }
+    },
+    computed:mapState({
+        text:state=>state.text,
+        ...mapGetters([
+            'listCount'
+        ])
+    }),
+    components:{
+        cTable,
+        cForm
+    },
+    mounted(){
+        this.testVuex();
     },
     methods: {
         test() {
@@ -84,15 +108,29 @@ export default {
                 };
             }
         },
-        getApi(){
-           this.$axios.get("http://localhost:61848/api/Products").then(
+        testVuex(){
+           let _api = "http://localhost:56957/";
+           this.$axios.get(_api+"api/Products").then(
                (response)=>{
-                   console.log(response.data)
+                   let data = response.data;
+                //    this.$store.dispatch("getData",data);
+                   this.get(data)
+                   console.log(this.$store.state.tableData);
                },(err)=>{
                    console.log(err);
                }
            )
-        }
+        },
+        ...mapActions({
+            get:'getData'
+        })
     }
+
 }
 </script>
+
+<style lang="scss" scoped>
+.table{
+    margin:10px 0;
+}
+</style>
