@@ -18,7 +18,7 @@
         width="280">
       </el-table-column>
       <el-table-column
-      label="操作">
+      label="操作" prop="Id">
       <template scope="scope">
         <el-button type="text" size="small" @click="del(scope.$index)">Delete</el-button>
       </template>
@@ -39,7 +39,16 @@ import {mapActions} from "vuex"
       }),
       methods:{
         del(id){
-          this.delItem(id);
+          let vm = this;
+          let _url = "http://localhost:56957/api/Products/"+id;
+          // vm.$http.delete(_url,{method:"DELETE",emulateHTTP:true,emulateJSON:true}).then(
+          //   (response)=>{
+          //     vm.delItem(id);
+          //   },(err)=>{
+          //     console.log(err);
+          //   }
+          // )
+          vm.delItem(id)
         },
         ...mapActions([
           "delItem"

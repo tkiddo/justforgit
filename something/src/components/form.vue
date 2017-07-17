@@ -2,13 +2,13 @@
 <el-form label-width="80px" v-model="content" ref="content">
   <el-button @click="add('content')">Add</el-button>
   <el-button>Search</el-button>
-  <el-form-item label="名称" style="margin-top:20px" prop="Name">
+  <el-form-item label="名称" style="margin-top:20px">
     <el-input v-model="content.Name"></el-input>
   </el-form-item>
-  <el-form-item label="类别" prop="Category">
+  <el-form-item label="类别">
     <el-input v-model="content.Category"></el-input>
   </el-form-item>
-  <el-form-item label="价格" prop="Price">
+  <el-form-item label="价格">
     <el-input v-model="content.Price"></el-input>
   </el-form-item>
 </el-form>
@@ -22,22 +22,21 @@ import {mapActions} from "vuex"
             Name:'',
             Category:'',
             Price:''
-        },
-        _api:"http://localhost:56957/"
+        }
       };
     },
     methods:{
         add(formName){
-          let data = this.content;
-          let url = this._api+"api/Products";
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-              this.addItem(data);
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+          let vm = this;
+          let data = vm.content;
+          vm.$http.post("http://localhost:56957/api/Products",data,{emulateJSON: true}).then(
+            (response)=>{
+              vm.addItem(data);
+              vm.$router.go(0)
+            },(err)=>{
+              console.log(err)
+            }
+          )
       },
       ...mapActions([
         "addItem"

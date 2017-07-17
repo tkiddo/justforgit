@@ -35,7 +35,7 @@ export default {
         cForm
     },
     mounted(){
-        this.testVuex();
+        this.getData();
     },
     methods: {
         test() {
@@ -108,7 +108,7 @@ export default {
                 };
             }
         },
-        testVuex(){
+        getData(){
            let _api = "http://localhost:56957/";
            this.$axios.get(_api+"api/Products").then(
                (response)=>{
