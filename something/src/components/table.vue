@@ -40,8 +40,8 @@ import {mapActions} from "vuex"
       methods:{
         del(id){
           let vm = this;
-          let _url = "http://localhost:56957/api/Products/"+id;
-          // vm.$http.delete(_url,{method:"DELETE",emulateHTTP:true,emulateJSON:true}).then(
+          // let _url = "http://localhost:3000/api/Products/1";
+          // vm.$http.delete(_url).then(
           //   (response)=>{
           //     vm.delItem(id);
           //   },(err)=>{

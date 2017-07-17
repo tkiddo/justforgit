@@ -109,7 +109,7 @@ export default {
             }
         },
         getData(){
-           let _api = "http://localhost:56957/";
+           let _api = "http://localhost:3000/";
            this.$axios.get(_api+"api/Products").then(
                (response)=>{
                    let data = response.data;
