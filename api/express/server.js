@@ -21,8 +21,6 @@ var DB_CONN_STR = 'mongodb://localhost:27017/runoob';
 var selectData = function(db, callback) {
     //连接到表  
     var collection = db.collection('site');
-    //查询数据
-    var whereStr = { "name": '菜鸟教程' };
     collection.find().toArray(function(err, result) {
         if (err) {
             console.log('Error:' + err);
