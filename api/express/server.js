@@ -44,12 +44,14 @@ var selectByName = function(db, name, callback) {
     });
 }
 
+var ObjectId = require('mongodb').ObjectID;
 var delData = function(db, id, callback) {
     //连接到表  
     var collection = db.collection('site');
     //删除数据
-    var whereStr = { "_id": id };
-    collection.remove(whereStr, function(err, result) {
+    var obj_id = ObjectId(id);
+    var whereStr = { "_id": obj_id };
+    collection.remove(whereStr, { justOne: true }, function(err, result) {
         if (err) {
             console.log('Error:' + err);
             return;
@@ -105,11 +107,10 @@ app.get('/list/:name', function(req, res) {
         });
     })
     //delete 删除项目
-app.delete('/del/:_id', function(req, res) {
+app.delete('/del', function(req, res) {
     MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log("连接成功！");
-        var id = req.params._id;
-        console.log(id)
+        var id = req.query._id;
         delData(db, id, function(result) {
             console.log(result);
             db.close();
@@ -121,15 +122,15 @@ app.delete('/del/:_id', function(req, res) {
 app.post('/add', urlencodedParser, function(req, res) {
     MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log("连接成功！");
-        console.log(req)
+        console.log(req.query)
         var data = {
             name: req.query.name,
             url: req.query.url
         }
-        console.log(data)
         insertData(db, data, function(result) {
             console.log(result);
             db.close();
+            res.end(JSON.stringify(result))
         });
     });
 })

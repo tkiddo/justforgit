@@ -71,14 +71,15 @@
                 },
                 del: function(id) {
                     var vm = this;
-                    vm.$http.delete("http://localhost:8081/del/" + id).then(
+                    vm.$http.delete("http://localhost:8081/del?_id=" + id).then(
                         function(res) {
                             var list = vm.arr;
                             for (var i = 0; i < list.length; i++) {
-                                if (list[i]._id = id) {
+                                if (list[i]._id == id) {
                                     list.splice(i, 1);
                                 }
                             }
+                            vm.arr = list;
                             console.log(res)
                         },
                         function(err) {
@@ -106,11 +107,11 @@
                     )
                 },
                 add: function(item) {
-                    console.log(item)
+
                     var vm = this;
-                    vm.$http.post("http://localhost:8081/add", item).then(
+                    vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url).then(
                         function(res) {
-                            console.log(res)
+                            vm.arr.push(item)
                         },
                         function(err) {
                             console.log(err)

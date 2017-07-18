@@ -6,7 +6,7 @@ var delData = function(db, callback) {
     var collection = db.collection('site');
     //删除数据
     var whereStr = { "name": '菜鸟工具' };
-    collection.remove(whereStr, function(err, result) {
+    collection.remove(whereStr, { justOne: true }, function(err, result) {
         if (err) {
             console.log('Error:' + err);
             return;
