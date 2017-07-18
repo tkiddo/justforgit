@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script src="../js/vue.js"></script>
+    <script src="../js/vue-resource.js"></script>
+    <script src="../js/jquery-3.2.1.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h3>{{msg}}</h3>
+        <table class="table table-striped">
+            <tr>
+                <td>name</td>
+                <td>url</td>
+                <td>operation</td>
+            </tr>
+            <tr v-for="item in arr">
+                <td>{{item.name}}</td>
+                <td>{{item.url}}</td>
+                <td><button @click="del(item._id)">delete</button></td>
+            </tr>
+        </table>
+        <div>name:<input type="text" name="name" v-model="name"><button @click="search(name)">search</button></div>
+        <div class="form-inline" style="margin:10px 0" :model="newItem">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" placeholder="Jane Doe" v-model="newItem.name">
+            </div>
+            <div class="form-group">
+                <label>Url</label>
+                <input type="text" class="form-control" placeholder="baidu.com" v-model="newItem.url">
+            </div>
+            <button class="btn btn-default" @click="add(newItem)">Add</button>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                msg: 'here is the list',
+                arr: [],
+                name: '',
+                newItem: {
+                    name: '2',
+                    url: '3'
+                }
+            },
+            mounted() {
+                this.getData();
+            },
+            methods: {
+                getData: function() {
+                    var vm = this;
+                    vm.$http.get("http://localhost:8081/list").then(
+                        function(res) {
+                            vm.arr = res.data;
+                        },
+                        function(err) {
+                            console.log(err)
+                        }
+                    )
+
+                },
+                del: function(id) {
+                    var vm = this;
+                    vm.$http.delete("http://localhost:8081/del/" + id).then(
+                        function(res) {
+                            var list = vm.arr;
+                            for (var i = 0; i < list.length; i++) {
+                                if (list[i]._id = id) {
+                                    list.splice(i, 1);
+                                }
+                            }
+                            console.log(res)
+                        },
+                        function(err) {
+                            console.log(err)
+                        }
+                    )
+
+                },
+                search: function(name) {
+                    var vm = this;
+                    vm.$http.get("http://localhost:8081/list/" + name).then(
+                        function(res) {
+                            var list = [];
+                            var result = {
+                                _id: res.data[0]._id,
+                                name: res.data[0].name,
+                                url: res.data[0].url
+                            };
+                            list.push(result);
+                            vm.arr = list;
+                        },
+                        function(err) {
+                            console.log(err)
+                        }
+                    )
+                },
+                add: function(item) {
+                    console.log(item)
+                    var vm = this;
+                    vm.$http.post("http://localhost:8081/add", item).then(
+                        function(res) {
+                            console.log(res)
+                        },
+                        function(err) {
+                            console.log(err)
+                        }
+                    )
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
