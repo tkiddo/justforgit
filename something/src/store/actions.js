@@ -7,6 +7,15 @@ const actions = {
     },
     delItem(context, id) {
         context.commit("delItem", id);
+    },
+    getResult(context, data) {
+        context.commit('getResult', data);
+    },
+    showDialog(context) {
+        context.commit('showDialog')
+    },
+    hideDialog(context) {
+        context.commit('hideDialog')
     }
 }
 

@@ -1,15 +1,13 @@
 <template>
-<el-form label-width="80px" v-model="content" ref="content">
-  <el-form-item label="名称" style="margin-top:20px">
-    <el-input v-model="content.Name"></el-input>
+<el-form label-width="50px" v-model="content" ref="content" :inline="true">
+  <el-form-item label="名称">
+    <el-input v-model="content.name"></el-input>
   </el-form-item>
-  <el-form-item label="类别">
-    <el-input v-model="content.Category"></el-input>
+  <el-form-item label="网址">
+    <el-input v-model="content.url"></el-input>
   </el-form-item>
-  <el-form-item label="价格">
-    <el-input v-model="content.Price"></el-input>
-  </el-form-item>
-  <el-button @click="add('content')">Add</el-button>
+  <el-button @click="add(content)">Add</el-button>
+  <el-button @click="search(content)">SearchByName</el-button>
 </el-form>
 </template>
 <script>
@@ -18,27 +16,47 @@ import {mapActions} from "vuex"
     data() {
       return {
         content:{
-            Name:'',
-            Category:'',
-            Price:''
+            _id:'',
+            name:'',
+            url:''
         }
       };
     },
     methods:{
-        add(formName){
+        add(item){
           let vm = this;
-          let data = vm.content;
-          vm.$http.post("http://localhost:3000/api/Products",data,{emulateJSON: true}).then(
+          vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url,{emulateJSON: true}).then(
             (response)=>{
-              vm.addItem(data);
+              vm.addItem(item);
               vm.$router.go(0)
             },(err)=>{
               console.log(err)
             }
           )
       },
+      search(item){
+        let vm = this;
+        console.log(item)
+        vm.$http.get("http://localhost:8081/list/" + item.name).then(
+                        (res)=> {
+                            var list = [];
+                            var result = {
+                                _id: res.data[0]._id,
+                                name: res.data[0].name,
+                                url: res.data[0].url
+                            };
+                            list.push(result);
+                            vm.getResult(list);
+                        },
+                        (err)=> {
+                            console.log(err)
+                        }
+                    )
+
+      },
       ...mapActions([
-        "addItem"
+        "addItem",
+        "getResult"
       ])
     }
   }

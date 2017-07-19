@@ -109,8 +109,7 @@ export default {
             }
         },
         getData(){
-           let _api = "http://localhost:3000/";
-           this.$axios.get(_api+"api/Products").then(
+           this.$axios.get("http://localhost:8081/list").then(
                (response)=>{
                    let data = response.data;
                 //    this.$store.dispatch("getData",data);
