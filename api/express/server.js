@@ -74,6 +74,22 @@ var insertData = function(db, data, callback) {
     });
 }
 
+var updateData = function(db, id, change, callback) {
+    //连接到表  
+    var collection = db.collection('site');
+    //更新数据
+    var obj_id = ObjectId(id);
+    var whereStr = { "_id": obj_id };
+    var updateStr = { $set: change };
+    collection.update(whereStr, updateStr, function(err, result) {
+        if (err) {
+            console.log('Error:' + err);
+            return;
+        }
+        callback(result);
+    });
+}
+
 app.get('/html/index.html', function(req, res) {
     res.sendFile(__dirname + "/" + "html/index.html");
 })
@@ -135,6 +151,21 @@ app.post('/add', urlencodedParser, function(req, res) {
     });
 })
 
+app.put('/update', function(req, res) {
+    MongoClient.connect(DB_CONN_STR, function(err, db) {
+        console.log("连接成功！");
+        var id = req.query._id;
+        var change = {
+            name: req.query.newName,
+            url: req.query.newUrl
+        }
+        updateData(db, id, change, function(result) {
+            console.log(result);
+            db.close();
+            res.end(JSON.stringify(result))
+        });
+    });
+})
 
 var server = app.listen(8081, function() {
 
