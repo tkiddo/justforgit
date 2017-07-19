@@ -108,7 +108,7 @@
                 add: function(item) {
                     console.log(item)
                     var vm = this;
-                    vm.$http.post("http://localhost:8081/add", item).then(
+                    vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url).then(
                         function(res) {
                             console.log(res)
                         },
