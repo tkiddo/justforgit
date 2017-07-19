@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "connect": "^3.6.2",
     "mongodb": "^2.2.30"
   }
 }
