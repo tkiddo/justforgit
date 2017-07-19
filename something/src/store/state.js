@@ -1,6 +1,6 @@
 const state = {
     tableData: [],
-    text: 'for testing',
+    text: 'for state testing',
     dialogVisible: false
 }
 export default state
