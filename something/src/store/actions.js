@@ -11,6 +11,9 @@ const actions = {
     getResult(context, data) {
         context.commit('getResult', data);
     },
+    updateItem(context, data) {
+        context.commit('updateItem', data);
+    },
     showDialog(context) {
         context.commit('showDialog')
     },

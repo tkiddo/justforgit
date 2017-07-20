@@ -21,7 +21,7 @@
       </template>
     </el-table-column>
     </el-table>
-    <cDialog></cDialog>
+    <cDialog :itemIndex = 'updateIndex'></cDialog>
   </div>
     
   </template>
@@ -33,7 +33,7 @@ import cDialog from "../components/dialog.vue"
     export default {
       data() {
         return {
-          
+          updateIndex:0
         }
       },
       computed:mapState({
@@ -54,7 +54,7 @@ import cDialog from "../components/dialog.vue"
         update(item){
           let vm = this;
           vm.showDialog()
-
+          vm.updateIndex = item;
         },
         ...mapActions([
           "delItem",

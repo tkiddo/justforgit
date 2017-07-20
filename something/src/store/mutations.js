@@ -11,6 +11,15 @@ const mutations = {
     getResult(state, data) {
         state.tableData = data;
     },
+    updateItem(state, item) {
+        let list = state.tableData;
+        for (let i = 0; i < list.length; i++) {
+            if (item._id == list[i]._id) {
+                list.splice(i, 1, item);
+            }
+        }
+        state.tableData = list;
+    },
     showDialog(state) {
         state.dialogVisible = true;
     },

@@ -4,10 +4,17 @@
   :visible.sync="dialogVisible"
   size="tiny"
   :before-close="handleClose">
-  <span>这是一段信息</span>
+  <el-form label-width="50px" v-model="tableData[itemIndex]">
+  <el-form-item label="名称">
+    <el-input v-model="tableData[itemIndex].name"></el-input>
+  </el-form-item>
+  <el-form-item label="网址">
+    <el-input v-model="tableData[itemIndex].url"></el-input>
+  </el-form-item>
+  </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button @click="hideDialog">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="update(tableData[itemIndex])">确 定</el-button>
   </span>
 </el-dialog>
 </template>
@@ -19,21 +26,31 @@ import {mapActions} from 'vuex'
     data() {
       return {
         
-      };
+      }
     },
+    props:['itemIndex'],
     computed:mapState({
-        dialogVisible:state=>state.dialogVisible
+        dialogVisible:state=>state.dialogVisible,
+        tableData:state=>state.tableData
     }),
     methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
+      handleClose() {
+        this.hideDialog()
+      },
+      update(item){
+        let vm = this;
+        vm.$http.put("http://localhost:8081/update?_id=" + item._id + "&newName=" + item.name + "&newUrl=" + item.url).then(
+          (res)=>{
+            vm.updateItem(item);
+            vm.hideDialog();
+          },(err)=>{
+            console.log(err)
+          }
+        )
       },
       ...mapActions([
-          "hideDialog"
+          "hideDialog",
+          "updateItem"
       ])
     }
   };
