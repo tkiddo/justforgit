@@ -132,10 +132,20 @@
                 add: function(item) {
 
                     var vm = this;
-                    vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url).then(
+                    // vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url).then(
+                    //     function(res) {
+                    //         window.location.reload();
+                    //     },
+                    //     function(err) {
+                    //         console.log(err)
+                    //     }
+                    // );
+
+                    vm.$http.post("http://localhost:8081/add", item).then(
                         function(res) {
                             // vm.arr.push(item);
-                            window.location.reload();
+                            // window.location.reload();
+                            console.log(res)
                         },
                         function(err) {
                             console.log(err)

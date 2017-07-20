@@ -1,8 +1,11 @@
 var express = require('express');
 var app = express();
+//处理post参数问题
 var bodyParser = require('body-parser');
 // 创建 application/x-www-form-urlencoded 编码解析
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.json());
+
 
 app.use(express.static('public'));
 
@@ -138,10 +141,10 @@ app.delete('/del', function(req, res) {
 app.post('/add', urlencodedParser, function(req, res) {
     MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log("连接成功！");
-        console.log(req.query)
+        console.log(req.body)
         var data = {
-            name: req.query.name,
-            url: req.query.url
+            name: req.body.name,
+            url: req.body.url
         }
         insertData(db, data, function(result) {
             console.log(result);

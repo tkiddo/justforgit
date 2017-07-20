@@ -25,10 +25,10 @@ import {mapActions} from "vuex"
     methods:{
         add(item){
           let vm = this;
-          vm.$http.post("http://localhost:8081/add?name=" + item.name + "&url=" + item.url,{emulateJSON: true}).then(
+          vm.$http.post("http://localhost:8081/add",item).then(
             (response)=>{
               vm.addItem(item);
-              vm.$router.go(0)
+              // vm.$router.go(0)
             },(err)=>{
               console.log(err)
             }
