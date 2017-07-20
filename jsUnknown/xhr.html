@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <button type="button" id="add">add</button>
+    <script>
+        var _url = "http://localhost:8081/";
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                    console.log(xhr.responseText)
+                } else {
+                    console.log("request was unsuccessful:" + xhr.status)
+                }
+            }
+        }
+        xhr.open('get', _url + "list", true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        // var allHeaders = xhr.getResponseHeader("Content-Type");
+        // console.log(allHeaders)
+        xhr.send(null);
+
+        document.getElementById("add").addEventListener('click', function() {
+            var data = new FormData();
+            data.append({
+                'name': 'youku',
+                'url': 'www.youlku.com'
+            })
+        })
+    </script>
+</body>
+
+</html>
