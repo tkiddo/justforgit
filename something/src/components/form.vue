@@ -37,15 +37,18 @@ import {mapActions} from "vuex"
       search(item){
         let vm = this;
         console.log(item)
-        vm.$http.get("http://localhost:8081/list/" + item.name).then(
+        vm.$http.get("http://localhost:8081/getInfo?name=" + item.name).then(
                         (res)=> {
                             var list = [];
-                            var result = {
-                                _id: res.data[0]._id,
-                                name: res.data[0].name,
-                                url: res.data[0].url
-                            };
-                            list.push(result);
+                            for(var i=0;i<res.data.length;i++){
+                                var result = {
+                                    _id: res.data[0]._id,
+                                    name: res.data[0].name,
+                                    url: res.data[0].url
+                                };
+                                list.push(result);
+                            }
+                            
                             vm.getResult(list);
                         },
                         (err)=> {

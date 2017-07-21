@@ -113,10 +113,10 @@ app.get('/list', function(req, res) {
 })
 
 //get 根据name获取
-app.get('/list/:name', function(req, res) {
+app.get('/getInfo', function(req, res) {
         MongoClient.connect(DB_CONN_STR, function(err, db) {
             console.log("连接成功！");
-            var name = req.params.name;
+            var name = req.query.name;
             console.log(name)
             selectByName(db, name, function(result) {
                 console.log(result);
@@ -157,10 +157,10 @@ app.post('/add', urlencodedParser, function(req, res) {
 app.put('/update', function(req, res) {
     MongoClient.connect(DB_CONN_STR, function(err, db) {
         console.log("连接成功！");
-        var id = req.query._id;
+        var id = req.body._id;
         var change = {
-            name: req.query.newName,
-            url: req.query.newUrl
+            name: req.body.name,
+            url: req.body.url
         }
         updateData(db, id, change, function(result) {
             console.log(result);

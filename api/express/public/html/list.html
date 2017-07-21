@@ -113,15 +113,18 @@
                 },
                 search: function(name) {
                     var vm = this;
-                    vm.$http.get("http://localhost:8081/list/" + name).then(
+                    vm.$http.get("http://localhost:8081/getInfo?name=" + name).then(
                         function(res) {
                             var list = [];
-                            var result = {
-                                _id: res.data[0]._id,
-                                name: res.data[0].name,
-                                url: res.data[0].url
-                            };
-                            list.push(result);
+                            for (var i = 0; i < res.data.length; i++) {
+                                var result = {
+                                    _id: res.data[i]._id,
+                                    name: res.data[i].name,
+                                    url: res.data[i].url
+                                };
+                                list.push(result);
+                            }
+
                             vm.arr = list;
                         },
                         function(err) {
@@ -159,7 +162,7 @@
                 },
                 updateSure: function(item) {
                     var vm = this;
-                    vm.$http.put("http://localhost:8081/update?_id=" + item._id + "&newName=" + item.name + "&newUrl=" + item.url).then(
+                    vm.$http.put("http://localhost:8081/update", item).then(
                         function(res) {
                             vm.dialogVisible = false;
                         },

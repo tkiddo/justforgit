@@ -39,7 +39,7 @@ import {mapActions} from 'vuex'
       },
       update(item){
         let vm = this;
-        vm.$http.put("http://localhost:8081/update?_id=" + item._id + "&newName=" + item.name + "&newUrl=" + item.url).then(
+        vm.$http.put("http://localhost:8081/update",item).then(
           (res)=>{
             vm.updateItem(item);
             vm.hideDialog();
