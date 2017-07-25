@@ -9,6 +9,8 @@
         <c-form></c-form>
         <div>Count:{{listCount}}</div>
         <div>{{text}}</div>
+        <el-button @click="test">test</el-button>
+        <el-button @click="login">login</el-button>
     </div>
 </template>
 
@@ -42,15 +44,32 @@ export default {
             // let {name,age} = {name:'king',age:12};
 
             // var {name, child: {age}} = {name: "Bob", child: {age: 12}};
-            var students = [
-                { name: "Bob" },
-                { name: "Lily" }
-            ]
+            // var students = [
+            //     { name: "Bob" },
+            //     { name: "Lily" }
+            // ]
 
-            for (var { name } of students) {     //直接取出name属性
-                console.log(name);
-            }
+            // for (var { name } of students) {     //直接取出name属性
+            //     console.log(name);
+            // }
             // console.log(age);
+            this.$axios.get('http://localhost:8084/api/info/BuildingManagement/GetList').then(
+                (res)=>{
+                    console.log(res)
+                },(err)=>{
+                    console.log(err)
+                }
+            )
+        },
+        login(){
+            this.$axios.post('http://localhost:8084/api/System/Admin/Login',{userName:'admin',userPassword:654321}).then(
+                (res)=>{
+                    console.log(res)
+                },(err)=>{
+                    console.log(err)
+                }
+            )
+
         },
         stack() {
             function Stack() {
