@@ -173,7 +173,7 @@
                     var url = this.apiBase + 'productList/addProduct'
                     vm.$http.post(url, item).then(
                         (res) => {
-                            alert('saved')
+                            vm.productData.push(item)
                         }, (err) => {
                             console.log(err)
                         }
