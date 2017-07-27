@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script src="../public/javascripts/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script src="../public/javascripts/vue-resource.js"></script>
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+</head>
+
+<body>
+    <div id="app" class="flex">
+        <div class="left-menu">
+            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" @select="choose">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-message"></i>商品管理</template>
+                    <el-menu-item-group>
+                        <el-menu-item index="1-1">商品列表</el-menu-item>
+                        <el-menu-item index="1-2">增加商品</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-menu"></i>订单管理</template>
+                    <el-menu-item-group>
+                        <el-menu-item index="2-1">订单列表</el-menu-item>
+                        <el-menu-item index="2-2">订单处理</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-setting"></i>用户管理</template>
+                    <el-menu-item-group>
+                        <el-menu-item index="3-1">用户权限</el-menu-item>
+                        <el-menu-item index="3-2">增加用户</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </div>
+        <div class="right-main">
+            <div v-if="activeTab==='1-1'" class="flex a-center flex-column">
+                <el-table :data="productPagination[pageIndex]" style="width: 100%" stripe>
+                    <el-table-column prop="name" label="名称">
+                    </el-table-column>
+                    <el-table-column prop="price" label="价格">
+                    </el-table-column>
+                    <el-table-column prop="store" label="商铺">
+                    </el-table-column>
+                    <el-table-column prop="date" label="日期">
+                    </el-table-column>
+                </el-table>
+                <div class="block">
+                    <el-pagination layout="prev, pager, next" :total="productCount" @current-change="pageChange">
+                    </el-pagination>
+                </div>
+            </div>
+            <div v-else-if="activeTab==='1-2'">
+                add-product
+            </div>
+            <div v-else-if="activeTab==='2-1'">
+                order-list
+            </div>
+            <div v-else-if="activeTab==='2-2'">
+                order-manage
+            </div>
+            <div v-else-if="activeTab==='3-1'">
+                user-right
+            </div>
+            <div v-else-if="activeTab==='3-2'">
+                add-user
+            </div>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                activeTab: '1-1',
+                productData: [],
+                apiBase: 'http://localhost:3000/',
+                pageIndex: 0,
+                limit: 10
+            },
+            computed: {
+                productCount: function() {
+                    return this.productData.length
+                },
+                productPagination: function() {
+                    var newArr = this.splitArray(this.productData, this.limit);
+                    return newArr
+                }
+            },
+            mounted() {
+                this.getProductList()
+            },
+            methods: {
+                handleOpen(key, keyPath) {
+                    console.log(key, keyPath);
+                },
+                handleClose(key, keyPath) {
+                    console.log(key, keyPath);
+                },
+                choose(index) {
+                    this.activeTab = index;
+                },
+                getProductList() {
+                    var url = this.apiBase + 'productList';
+                    var vm = this;
+                    vm.$http.get(url).then(
+                        function(res) {
+                            vm.productData = res.data
+                        },
+                        function(err) {
+                            console.log(err)
+                        }
+                    )
+                },
+                splitArray(arr, num) {
+                    num = num * 1 || 1;
+                    var ret = [];
+                    arr.forEach(function(item, i) {
+                        if (i % num === 0) {
+                            ret.push([]);
+                        }
+                        ret[ret.length - 1].push(item);
+                    });
+                    return ret;
+                },
+                pageChange(currentPage) {
+                    this.pageIndex = currentPage - 1;
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

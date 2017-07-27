@@ -4,7 +4,7 @@ var mongo = require('../mongodb/mongo');
 
 //get 获取商品列表
 router.get('/', function(req, res) {
-    mongo.find({}, ['name', 'price', 'date'], function(err, pros) {
+    mongo.find({}, ['name', 'price', 'date', 'store'], function(err, pros) {
         res.end(JSON.stringify(pros))
     })
 });

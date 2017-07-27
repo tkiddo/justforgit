@@ -1,0 +1,48 @@
+// common
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flex {
+    display: flex
+}
+
+.fg {
+    flex: 1;
+}
+
+// 上下居中
+.j-center {
+    justify-content: center
+}
+
+// 左右居中
+.a-center {
+    align-items: center
+}
+
+// 垂直分布
+.flex-column {
+    flex-direction: column
+}
+
+// index
+.left-menu {
+    width: 220px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: #eef1f6;
+    z-index: 11111;
+}
+
+.right-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding-left: 220px;
+}
