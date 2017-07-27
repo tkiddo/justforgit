@@ -34,7 +34,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // if ('development' == app.get('env')) {
 //     app.use(express.errorHandler());
 // }
-
+//处理post参数
+// 创建 application/x-www-form-urlencoded 编码解析
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 routes(app);
 
 http.createServer(app).listen(app.get('port'), function() {

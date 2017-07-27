@@ -17,7 +17,7 @@
 <body>
     <div id="app" class="flex">
         <div class="left-menu">
-            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" @select="choose">
+            <el-menu default-active="2" class="el-menu-vertical-demo" @select="choose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-message"></i>商品管理</template>
                     <el-menu-item-group>
@@ -58,8 +58,37 @@
                     </el-pagination>
                 </div>
             </div>
-            <div v-else-if="activeTab==='1-2'">
-                add-product
+            <div v-else-if="activeTab==='1-2'" class="flex a-center flex-column">
+                <el-form label-width="60px" :model="productForm" label-position="left" style="width:100%">
+                    <el-form-item label="名称">
+                        <el-input v-model="productForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input v-model="productForm.description"></el-input>
+                    </el-form-item>
+                    <el-form-item label="价格">
+                        <el-input v-model="productForm.price"></el-input>
+                    </el-form-item>
+                    <el-form-item label="库存">
+                        <el-input v-model="productForm.countInHold"></el-input>
+                    </el-form-item>
+                    <el-form-item label="已售">
+                        <el-input v-model="productForm.countSaled"></el-input>
+                    </el-form-item>
+                    <el-form-item label="图片">
+                        <el-input v-model="productForm.imgPath"></el-input>
+                    </el-form-item>
+                    <el-form-item label="日期">
+                        <el-input v-model="productForm.date"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商铺">
+                        <el-input v-model="productForm.store"></el-input>
+                    </el-form-item>
+                    <el-form-item style="text-align:center">
+                        <el-button type="primary" @click="addProduct(productForm)">提交</el-button>
+                        <el-button @click="">重置</el-button>
+                    </el-form-item>
+                </el-form>
             </div>
             <div v-else-if="activeTab==='2-1'">
                 order-list
@@ -83,7 +112,17 @@
                 productData: [],
                 apiBase: 'http://localhost:3000/',
                 pageIndex: 0,
-                limit: 10
+                limit: 10,
+                productForm: {
+                    name: '',
+                    description: '',
+                    price: 0,
+                    countInHold: 0,
+                    countSaled: 0,
+                    imgPath: '',
+                    date: '',
+                    store: ''
+                }
             },
             computed: {
                 productCount: function() {
@@ -98,12 +137,6 @@
                 this.getProductList()
             },
             methods: {
-                handleOpen(key, keyPath) {
-                    console.log(key, keyPath);
-                },
-                handleClose(key, keyPath) {
-                    console.log(key, keyPath);
-                },
                 choose(index) {
                     this.activeTab = index;
                 },
@@ -133,6 +166,18 @@
                 pageChange(currentPage) {
                     this.pageIndex = currentPage - 1;
 
+                },
+                addProduct(item) {
+                    console.log(item)
+                    var vm = this;
+                    var url = this.apiBase + 'productList/addProduct'
+                    vm.$http.post(url, item).then(
+                        (res) => {
+                            alert('saved')
+                        }, (err) => {
+                            console.log(err)
+                        }
+                    )
                 }
             }
         })
