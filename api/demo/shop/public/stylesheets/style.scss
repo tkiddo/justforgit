@@ -12,14 +12,19 @@
     flex: 1;
 }
 
-// 上下居中
+// 左右居中
 .j-center {
     justify-content: center
 }
 
-// 左右居中
+// 上下居中
 .a-center {
     align-items: center
+}
+
+// 靠右
+.flex-end {
+    justify-content: flex-end;
 }
 
 // 垂直分布
@@ -27,6 +32,11 @@
     flex-direction: column
 }
 
+.errormsg {
+    color: red;
+}
+
+$mc: #eef1f6;
 // index
 .left-menu {
     width: 220px;
@@ -34,7 +44,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    background: #eef1f6;
+    background: $mc;
     z-index: 11111;
 }
 
@@ -45,4 +55,16 @@
     bottom: 0;
     right: 0;
     padding: 10px 10px 10px 230px;
+    .user-bar {
+        height: 50px;
+        margin-bottom: 10px;
+        background: $mc;
+        padding: 0 10px;
+    }
+}
+
+.bottom-btn {
+    width: 100%;
+    display: block;
+    text-align: center
 }

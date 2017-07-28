@@ -22,26 +22,32 @@ var bodyParser = require('body-parser');
 var parseData = bodyParser.urlencoded({ extended: false });
 //post 添加商品
 router.post('/addProduct', parseData, function(req, res) {
-    console.log(req.body)
-    var item = req.body;
-    var newProduct = {
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        countInHold: item.countInHold,
-        countSaled: item.countSaled,
-        imgPath: item.imgPath,
-        store: item.store,
-        date: item.date
-    };
-    mongo.create(newProduct, function(err) {
-        if (err) {
-            console.log("save error")
-        } else {
-            console.log("new product saved");
-            res.end('new product saved')
-        }
-    })
+    var loginUser = req.session.loginUser;
+    var isLogined = !!loginUser;
+    if (loginUser) {
+        var item = req.body;
+        var newProduct = {
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            countInHold: item.countInHold,
+            countSaled: item.countSaled,
+            imgPath: item.imgPath,
+            store: item.store,
+            date: item.date
+        };
+        mongo.create(newProduct, function(err) {
+            if (err) {
+                console.log("save error")
+            } else {
+                console.log("new product saved");
+                res.json({ msg: 'new product saved' })
+            }
+        })
+    } else {
+        res.json({ msg: 'login first' })
+    }
+
 
 })
 

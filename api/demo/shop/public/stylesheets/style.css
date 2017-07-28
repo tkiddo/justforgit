@@ -14,8 +14,14 @@
 .a-center {
   align-items: center; }
 
+.flex-end {
+  justify-content: flex-end; }
+
 .flex-column {
   flex-direction: column; }
+
+.errormsg {
+  color: red; }
 
 .left-menu {
   width: 220px;
@@ -33,5 +39,15 @@
   bottom: 0;
   right: 0;
   padding: 10px 10px 10px 230px; }
+  .right-main .user-bar {
+    height: 50px;
+    margin-bottom: 10px;
+    background: #eef1f6;
+    padding: 0 10px; }
+
+.bottom-btn {
+  width: 100%;
+  display: block;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

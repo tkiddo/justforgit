@@ -34,11 +34,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 // if ('development' == app.get('env')) {
 //     app.use(express.errorHandler());
 // }
+
+// session
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
+var identityKey = 'skey';
+var cookieParser = require('cookie-parser');
+var Favicon = require('serve-favicon');
+// app.use(Favicon())
+
 //处理post参数
 // 创建 application/x-www-form-urlencoded 编码解析
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+
+app.use(cookieParser())
+
+app.use(session({
+    name: identityKey,
+    secret: 'chyingo',
+    store: new FileStore(),
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 30 * 60 * 1000
+    }
+}))
 routes(app);
 
 http.createServer(app).listen(app.get('port'), function() {
