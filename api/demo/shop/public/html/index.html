@@ -183,9 +183,11 @@
                 this.getProductList()
             },
             methods: {
+                //tab切换
                 choose(index) {
                     this.activeTab = index;
                 },
+                // 获取商品列表
                 getProductList() {
                     var url = this.apiBase + 'productList';
                     var vm = this;
@@ -198,6 +200,7 @@
                         }
                     )
                 },
+                // 数组分页
                 splitArray(arr, num) {
                     num = num * 1 || 1;
                     var ret = [];
@@ -209,10 +212,12 @@
                     });
                     return ret;
                 },
+                // 分页切换
                 pageChange(currentPage) {
                     this.pageIndex = currentPage - 1;
 
                 },
+                // 添加商品
                 addProduct(item) {
                     console.log(item)
                     var vm = this;
@@ -233,6 +238,7 @@
                         }
                     )
                 },
+                // 登录
                 login(data) {
                     var vm = this;
                     var url = this.apiBase + 'login';
@@ -254,6 +260,7 @@
                         }
                     )
                 },
+                // 获取用户信息
                 getUser() {
                     var vm = this;
                     var url = this.apiBase + 'login';
@@ -269,6 +276,7 @@
                         }
                     )
                 },
+                // 退出登录
                 logout() {
                     var vm = this;
                     var url = this.apiBase + 'logout';
