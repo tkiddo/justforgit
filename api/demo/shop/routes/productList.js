@@ -49,21 +49,37 @@ router.post('/addProduct', parseData, function(req, res) {
 })
 
 router.post('/delProduct', parseData, function(req, res) {
+    var isLogined = loginCheck(req);
+    if (isLogined) {
+        var idArr = req.body.idArr;
+        console.log(idArr)
+        mongo.remove({ "_id": { $in: idArr } }, function(err, result) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('deleted')
+            }
+        });
+        res.json({ code: 1, msg: "删除成功！" })
+
+    } else {
+        res.json({ code: 0, msg: '请先登录！' })
+    }
+})
+
+router.put('/update', parseData, function(req, res) {
         var isLogined = loginCheck(req);
         if (isLogined) {
-            var idArr = req.body.idArr;
-            console.log(idArr)
-            mongo.remove({ "_id": { $in: idArr } }, function(err, result) {
+            var newData = req.body;
+            mongo.update({ "_id": newData._id }, newData, function(err, docs) {
                 if (err) {
-                    console.log(err);
+                    res.json({ code: 2, msg: '更新失败' })
                 } else {
-                    console.log('deleted')
+                    res.json({ code: 1, msg: "更新成功" })
                 }
-            });
-            res.json({ code: 1, msg: "删除成功！" })
-
+            })
         } else {
-            res.json({ code: 0, msg: '请先登录！' })
+            res.json({ code: 0, msg: '请先登录' })
         }
     })
     //登录检测

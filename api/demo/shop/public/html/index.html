@@ -22,7 +22,7 @@
                     <template slot="title"><i class="el-icon-message"></i>商品管理</template>
                     <el-menu-item-group>
                         <el-menu-item index="1-1">商品列表</el-menu-item>
-                        <el-menu-item index="1-2">增加商品</el-menu-item>
+                        <el-menu-item index="1-2" @click="setDefault">增加商品</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">
@@ -131,7 +131,8 @@
                         <el-input v-model="productForm.store"></el-input>
                     </el-form-item>
                     <el-form-item class="bottom-btn">
-                        <el-button type="primary" @click="addProduct(productForm)">提交</el-button>
+                        <el-button type="primary" v-if='isUpdate' @click='updateSubmit(productForm)'>更新</el-button>
+                        <el-button type="primary" @click="addProduct(productForm)" v-else>提交</el-button>
                         <el-button @click="">重置</el-button>
                     </el-form-item>
                 </el-form>
@@ -181,7 +182,8 @@
                 tipsDialog: false, //提示弹出框
                 tipMsg: '', //提示消息
                 searchName: '', //搜索字段,
-                selectedItem: [] //选中项_id列表
+                selectedItem: [], //选中项_id列表
+                isUpdate: false, //是否是更新操作
             },
             computed: {
                 productCount: function() {
@@ -230,6 +232,11 @@
                 pageChange(currentPage) {
                     this.pageIndex = currentPage - 1;
 
+                },
+                //重置表单
+                setDefault() {
+                    vm.productForm = {};
+                    vm.isUpdate = false;
                 },
                 // 添加商品
                 addProduct(item) {
@@ -349,12 +356,41 @@
                     }
 
                 },
+                //编辑
                 update(item) {
                     var vm = this;
                     if (item.length != 1) {
                         vm.tipsDialog = true;
-                        vm.tipMsg = "请选择一条！"
+                        vm.tipMsg = "请选择一条！";
+                    } else {
+                        vm.activeTab = "1-2";
+                        vm.isUpdate = true;
+                        var list = vm.productData;
+                        for (var i = 0; i < list.length; i++) {
+                            if (list[i]._id == item[0]) {
+                                vm.productForm = list[i];
+                                console.log(list[i])
+                            }
+                        }
                     }
+                },
+                //提交更新
+                updateSubmit(item) {
+                    var vm = this;
+                    var url = this.apiBase + 'productList/update';
+                    vm.$http.put(url, item).then(
+                        (res) => {
+                            if (res.data.code === 0) {
+                                vm.tipsDialog = true;
+                                vm.tipMsg = res.data.msg
+                            } else if (res.data.code === 1) {
+                                vm.tipsDialog = true;
+                                vm.tipMsg = res.data.msg;
+                            }
+                        }, (err) => {
+                            console.log(err)
+                        }
+                    )
                 }
             }
         })
