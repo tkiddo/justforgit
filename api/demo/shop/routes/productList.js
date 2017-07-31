@@ -35,9 +35,10 @@ router.post('/addProduct', parseData, function(req, res) {
             store: item.store,
             date: item.date
         };
-        mongo.create(newProduct, function(err) {
+        mongo.create(newProduct, function(err, docs) {
             if (err) {
-                console.log("save error")
+                console.log(err)
+                res.json({ code: 2, msg: '商品添加失败！' })
             } else {
                 console.log("new product saved");
                 res.json({ code: 1, msg: '商品添加成功！' })
@@ -56,11 +57,13 @@ router.post('/delProduct', parseData, function(req, res) {
         mongo.remove({ "_id": { $in: idArr } }, function(err, result) {
             if (err) {
                 console.log(err);
+                res.json({ code: 2, msg: "删除失败！" })
             } else {
                 console.log('deleted')
+                res.json({ code: 1, msg: "删除成功！" })
             }
         });
-        res.json({ code: 1, msg: "删除成功！" })
+
 
     } else {
         res.json({ code: 0, msg: '请先登录！' })

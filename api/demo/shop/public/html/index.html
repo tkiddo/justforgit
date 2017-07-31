@@ -16,31 +16,31 @@
 
 <body>
     <div id="app" class="flex">
-        <div class="left-menu">
-            <el-menu default-active="2" class="el-menu-vertical-demo" @select="choose">
-                <el-submenu index="1">
-                    <template slot="title"><i class="el-icon-message"></i>商品管理</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="1-1">商品列表</el-menu-item>
-                        <el-menu-item index="1-2" @click="setDefault">增加商品</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="2">
-                    <template slot="title"><i class="el-icon-menu"></i>订单管理</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="2-1">订单列表</el-menu-item>
-                        <el-menu-item index="2-2">订单处理</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="3">
-                    <template slot="title"><i class="el-icon-setting"></i>用户管理</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="3-1">用户登录</el-menu-item>
-                        <el-menu-item index="3-2">用户列表</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-            </el-menu>
-        </div>
+
+        <el-menu default-active="2" class="el-menu-vertical-demo left-menu" @select="choose">
+            <el-submenu index="1">
+                <template slot="title"><i class="el-icon-message"></i>商品管理</template>
+                <el-menu-item-group>
+                    <el-menu-item index="1-1">商品列表</el-menu-item>
+                    <el-menu-item index="1-2" @click="setDefault">增加商品</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="2">
+                <template slot="title"><i class="el-icon-menu"></i>订单管理</template>
+                <el-menu-item-group>
+                    <el-menu-item index="2-1">订单列表</el-menu-item>
+                    <el-menu-item index="2-2">订单处理</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="3">
+                <template slot="title"><i class="el-icon-setting"></i>用户管理</template>
+                <el-menu-item-group>
+                    <el-menu-item index="3-1">用户登录</el-menu-item>
+                    <el-menu-item index="3-2">用户列表</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+        </el-menu>
+
         <div class="right-main">
             <el-row class="user-bar flex a-center">
                 <el-col :span="24">
@@ -87,7 +87,7 @@
                 </el-col>
             </el-row>
             <div v-if="activeTab==='1-1'" class="flex a-center flex-column">
-                <el-table :data="productPagination[pageIndex]" style="width: 100%" stripe @selection-change='getSelection'>
+                <el-table :data="productPagination[pageIndex]" style="width: 100%" stripe @selection-change='getSelection' v-loading="isLoading">
                     <el-table-column type="selection" width="55">
                     </el-table-column>
                     <el-table-column prop="name" label="名称">
@@ -105,35 +105,35 @@
                 </div>
             </div>
             <div v-else-if="activeTab==='1-2'" class="flex a-center flex-column">
-                <el-form label-width="60px" :model="productForm" label-position="left" style="width:100%">
+                <el-form label-width="60px" :model="productForm" label-position="left" style="width:100%" ref='formData'>
                     <el-form-item label="名称">
-                        <el-input v-model="productForm.name"></el-input>
+                        <el-input v-model="productForm.name" placeholder="请输入名称"></el-input>
                     </el-form-item>
                     <el-form-item label="描述">
-                        <el-input v-model="productForm.description"></el-input>
+                        <el-input v-model="productForm.description" placeholder="请输入描述"></el-input>
                     </el-form-item>
                     <el-form-item label="价格">
-                        <el-input v-model="productForm.price"></el-input>
+                        <el-input v-model="productForm.price" placeholder="请输入价格" :rules="[{ type: 'number', message: '售价必须为数字值'}]"></el-input>
                     </el-form-item>
                     <el-form-item label="库存">
-                        <el-input v-model="productForm.countInHold"></el-input>
+                        <el-input v-model="productForm.countInHold" placeholder="请输入库存" :rules="[{ type: 'number', message: '库存必须为数字值'}]"></el-input>
                     </el-form-item>
                     <el-form-item label="已售">
-                        <el-input v-model="productForm.countSaled"></el-input>
+                        <el-input v-model="productForm.countSaled" placeholder="请输入已售" :rules="[{ type: 'number', message: '已售必须为数字值'}]"></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
-                        <el-input v-model="productForm.imgPath"></el-input>
+                        <el-input v-model="productForm.imgPath" placeholder="请输入图片"></el-input>
                     </el-form-item>
                     <el-form-item label="日期">
-                        <el-input v-model="productForm.date"></el-input>
+                        <el-date-picker type="date" placeholder="选择日期" v-model="productForm.date" format></el-date-picker>
                     </el-form-item>
                     <el-form-item label="商铺">
-                        <el-input v-model="productForm.store"></el-input>
+                        <el-input v-model="productForm.store" placeholder="请输入商铺"></el-input>
                     </el-form-item>
                     <el-form-item class="bottom-btn">
                         <el-button type="primary" v-if='isUpdate' @click='updateSubmit(productForm)'>更新</el-button>
                         <el-button type="primary" @click="addProduct(productForm)" v-else>提交</el-button>
-                        <el-button @click="">重置</el-button>
+                        <el-button @click="reset('formData')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -184,6 +184,7 @@
                 searchName: '', //搜索字段,
                 selectedItem: [], //选中项_id列表
                 isUpdate: false, //是否是更新操作
+                isLoading: false, //是否加载中
             },
             computed: {
                 productCount: function() {
@@ -230,8 +231,11 @@
                 },
                 // 分页切换
                 pageChange(currentPage) {
-                    this.pageIndex = currentPage - 1;
-
+                    this.isLoading = true;
+                    setTimeout(() => {
+                        this.isLoading = false;
+                        this.pageIndex = currentPage - 1;
+                    }, 1000)
                 },
                 //重置表单
                 setDefault() {
@@ -242,15 +246,14 @@
                 addProduct(item) {
                     console.log(item)
                     var vm = this;
-                    var url = this.apiBase + 'productList/addProduct'
+                    var url = this.apiBase + 'productList/addProduct';
+                    var dateStr = this.dateFormat(item.date);
+                    item.date = dateStr;
                     vm.$http.post(url, item).then(
                         (res) => {
-                            if (res.data.code === 0) {
-                                vm.tipsDialog = true;
-                                vm.tipMsg = res.data.msg;
-                            } else {
-                                vm.tipsDialog = true;
-                                vm.tipMsg = res.data.msg;
+                            vm.tipsDialog = true;
+                            vm.tipMsg = res.data.msg;
+                            if (res.data.code === 1) {
                                 vm.productData.push(item);
                             }
 
@@ -267,6 +270,10 @@
                     vm.$http.post(url, data).then(
                         (res) => {
                             if (res.data.code === 0) {
+                                vm.$message({
+                                    message: res.data.msg,
+                                    type: 'success'
+                                })
                                 vm.username = data.userName;
                                 vm.isLogined = true;
                                 vm.dialogVisible = false;
@@ -303,6 +310,10 @@
                     var url = this.apiBase + 'logout';
                     vm.$http.get(url).then(
                         (res) => {
+                            vm.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            })
                             vm.isLogined = false;
                         }, (err) => {
                             console.log(err)
@@ -316,7 +327,12 @@
                     var url = this.apiBase + 'productList/getSearch?name=' + item;
                     vm.$http.get(url).then(
                         (res) => {
-                            vm.productData = res.data
+                            this.isLoading = true;
+                            setTimeout(() => {
+                                this.isLoading = false;
+                                vm.productData = res.data
+                            }, 1000)
+
                         }, (err) => {
                             console.log(err)
                         }
@@ -343,12 +359,8 @@
                         }).then(
                             (res) => {
                                 vm.tipsDialog = true;
-                                if (res.data.code === 0) {
-                                    vm.tipMsg = res.data.msg;
-                                } else if (res.data.code === 1) {
-                                    vm.tipMsg = res.data.msg;
-                                    vm.getProductList()
-                                }
+                                vm.tipMsg = res.data.msg;
+                                vm.getProductList()
                             }, (err) => {
                                 console.log(err)
                             }
@@ -378,19 +390,68 @@
                 updateSubmit(item) {
                     var vm = this;
                     var url = this.apiBase + 'productList/update';
+                    var dateStr = this.dateFormat(item.date);
+                    item.date = dateStr;
                     vm.$http.put(url, item).then(
                         (res) => {
-                            if (res.data.code === 0) {
-                                vm.tipsDialog = true;
-                                vm.tipMsg = res.data.msg
-                            } else if (res.data.code === 1) {
-                                vm.tipsDialog = true;
-                                vm.tipMsg = res.data.msg;
-                            }
+                            vm.tipsDialog = true;
+                            vm.tipMsg = res.data.msg
                         }, (err) => {
                             console.log(err)
                         }
                     )
+                },
+                //重置
+                reset(name) {
+                    this.$refs[name].resetFields()
+                },
+                //日期格式化
+                dateFormat(item) {
+                    var date = String(item)
+                    var month = date.substr(4, 3);
+                    var day = date.substr(8, 2);
+                    var year = date.substr(11, 4);
+                    var monthNum;
+                    switch (month) {
+                        case "Jan":
+                            monthNum = "01";
+                            break;
+                        case "Feb":
+                            monthNum = "02";
+                            break;
+                        case "Mar":
+                            monthNum = "03";
+                            break;
+                        case "Apr":
+                            monthNum = "04";
+                            break;
+                        case "May":
+                            monthNum = "05";
+                            break;
+                        case "Jun":
+                            monthNum = "06";
+                            break;
+                        case "Jul":
+                            monthNum = "07";
+                            break;
+                        case "Aug":
+                            monthNum = "08";
+                            break;
+                        case "Sep":
+                            monthNum = "09";
+                            break;
+                        case "Oct":
+                            monthNum = "10";
+                            break;
+                        case "Nov":
+                            monthNum = "11";
+                            break;
+                        case "Dec":
+                            monthNum = "12";
+                            break;
+                    }
+                    var dateStr = year + '-' + monthNum + '-' + day;
+                    return dateStr;
                 }
             }
         })
