@@ -4,15 +4,15 @@ var mongo = require('../mongodb/mongo'); //product-model
 
 //get 获取商品列表
 router.get('/', function(req, res) {
-    mongo.find({}, ['name', 'price', 'date', 'store'], function(err, pros) {
+    mongo.find({}, function(err, pros) {
         res.end(JSON.stringify(pros))
     })
 });
 //get 获取指定商品
-router.get('/getDetail', function(req, res) {
+router.get('/getSearch', function(req, res) {
         var re = new RegExp(".*" + req.query.name + ".*");
         var querystr = { 'name': re };
-        mongo.find(querystr, ['name'], function(err, pros) {
+        mongo.find(querystr, function(err, pros) {
             res.end(JSON.stringify(pros))
         })
     })
@@ -22,9 +22,8 @@ var bodyParser = require('body-parser');
 var parseData = bodyParser.urlencoded({ extended: false });
 //post 添加商品
 router.post('/addProduct', parseData, function(req, res) {
-    var loginUser = req.session.loginUser;
-    var isLogined = !!loginUser;
-    if (loginUser) {
+    var isLogined = loginCheck(req);
+    if (isLogined) {
         var item = req.body;
         var newProduct = {
             name: item.name,
@@ -41,14 +40,37 @@ router.post('/addProduct', parseData, function(req, res) {
                 console.log("save error")
             } else {
                 console.log("new product saved");
-                res.json({ msg: 'new product saved' })
+                res.json({ code: 1, msg: '商品添加成功！' })
             }
         })
     } else {
-        res.json({ msg: 'login first' })
+        res.json({ code: 0, msg: '请先登录！' })
     }
-
-
 })
+
+router.post('/delProduct', parseData, function(req, res) {
+        var isLogined = loginCheck(req);
+        if (isLogined) {
+            var idArr = req.body.idArr;
+            console.log(idArr)
+            mongo.remove({ "_id": { $in: idArr } }, function(err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('deleted')
+                }
+            });
+            res.json({ code: 1, msg: "删除成功！" })
+
+        } else {
+            res.json({ code: 0, msg: '请先登录！' })
+        }
+    })
+    //登录检测
+function loginCheck(req) {
+    var loginUser = req.session.loginUser;
+    var isLogined = !!loginUser;
+    return isLogined;
+}
 
 module.exports = router;

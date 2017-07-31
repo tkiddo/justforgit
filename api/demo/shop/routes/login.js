@@ -7,9 +7,9 @@ router.route('/')
         users.find({ "userName": req.body.userName, "password": req.body.password }, function(err, user) {
             if (user.length != 0) {
                 req.session.loginUser = user[0].userName;
-                res.json({ ret_code: 0, ret_msg: "login successed" })
+                res.json({ code: 0, msg: "登录成功！" })
             } else {
-                res.json({ ret_code: 1, ret_msg: 'wrong name or password' })
+                res.json({ code: 1, msg: '用户名或者密码错误！' })
             }
         })
     })
@@ -19,9 +19,9 @@ router.route('/')
         var loginUser = sess.loginUser;
         var isLogined = !!loginUser;
         if (isLogined) {
-            res.json({ msg: 'logined', userName: loginUser })
+            res.json({ code: 1, msg: 'logined', userName: loginUser })
         } else {
-            res.json({ msg: 'not logined' })
+            res.json({ code: 0, msg: 'not logined' })
         }
     })
 

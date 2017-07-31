@@ -27,6 +27,16 @@
     justify-content: flex-end;
 }
 
+//两边分布
+.flex-bet {
+    justify-content: space-between
+}
+
+//均匀分布
+.flex-around {
+    justify-content: space-around
+}
+
 // 垂直分布
 .flex-column {
     flex-direction: column

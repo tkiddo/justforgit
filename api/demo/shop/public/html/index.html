@@ -44,7 +44,23 @@
         <div class="right-main">
             <el-row class="user-bar flex a-center">
                 <el-col :span="24">
-                    <div class="grid-content flex flex-end">
+                    <div class="grid-content flex flex-bet">
+                        <el-dialog title="提示" :visible.sync="tipsDialog" size="tiny" style="margin-left:220px">
+                            <span>{{tipMsg}}</span>
+                            <span slot="footer" class="dialog-footer" class="bottom-btn">
+                                <el-button type="primary" @click="tipsDialog = false">确 定</el-button>
+                            </span>
+                        </el-dialog>
+                        <div>
+                            <div v-if="activeTab==='1-1' || activeTab==='2-1'" class="flex flex-around">
+                                <el-input placeholder="搜索" icon="search" v-model="searchName" @click="searchClick(searchName)" style="margin-right:10px">
+                                </el-input>
+                                <el-button @click="update(selectedItem)">编辑</el-button>
+                                <el-button @click="del(selectedItem)">删除</el-button>
+                            </div>
+                            <div v-if="activeTab ==='1-2'" style="line-height:36px">请填写商品信息</div>
+                        </div>
+
                         <div v-if="isLogined">
                             {{username}}
                             <el-button @click="logout()">退出登录</el-button>
@@ -71,7 +87,9 @@
                 </el-col>
             </el-row>
             <div v-if="activeTab==='1-1'" class="flex a-center flex-column">
-                <el-table :data="productPagination[pageIndex]" style="width: 100%" stripe>
+                <el-table :data="productPagination[pageIndex]" style="width: 100%" stripe @selection-change='getSelection'>
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
                     <el-table-column prop="name" label="名称">
                     </el-table-column>
                     <el-table-column prop="price" label="价格">
@@ -117,12 +135,6 @@
                         <el-button @click="">重置</el-button>
                     </el-form-item>
                 </el-form>
-                <el-dialog title="提示" :visible.sync="loginDialog" size="tiny" style="margin-left:220px">
-                    <span>{{addMsg}}</span>
-                    <span slot="footer" class="dialog-footer" class="bottom-btn">
-                        <el-button type="primary" @click="loginDialog = false">确 定</el-button>
-                    </span>
-                </el-dialog>
             </div>
             <div v-else-if="activeTab==='2-1'">
                 order-list
@@ -142,11 +154,11 @@
         var vm = new Vue({
             el: "#app",
             data: {
-                activeTab: '1-1',
-                productData: [],
-                apiBase: 'http://localhost:3000/',
-                pageIndex: 0,
-                limit: 10,
+                activeTab: '1-1', //激活页面
+                productData: [], //所有商品
+                apiBase: 'http://localhost:3000/', //基本api
+                pageIndex: 0, //页码
+                limit: 10, //每页限制数量
                 productForm: {
                     name: '',
                     description: '',
@@ -156,18 +168,20 @@
                     imgPath: '',
                     date: '',
                     store: ''
-                },
-                isLogined: false,
-                dialogVisible: false,
+                }, //新增商品信息
+                isLogined: false, //是否登录
+                dialogVisible: false, //登录界面显示隐藏
                 loginData: {
                     userName: 'admin',
                     password: '123456'
-                },
-                username: '',
-                isError: false,
-                errorMsg: '',
-                loginDialog: false,
-                addMsg: ''
+                }, //登录信息
+                username: '', //用户名
+                isError: false, //是否报错
+                errorMsg: '', //错误信息
+                tipsDialog: false, //提示弹出框
+                tipMsg: '', //提示消息
+                searchName: '', //搜索字段,
+                selectedItem: [] //选中项_id列表
             },
             computed: {
                 productCount: function() {
@@ -224,13 +238,13 @@
                     var url = this.apiBase + 'productList/addProduct'
                     vm.$http.post(url, item).then(
                         (res) => {
-                            if (res.data.msg === "login first") {
-                                vm.loginDialog = true;
-                                vm.addMsg = '请先登录！';
+                            if (res.data.code === 0) {
+                                vm.tipsDialog = true;
+                                vm.tipMsg = res.data.msg;
                             } else {
-                                vm.loginDialog = true;
-                                vm.addMsg = '添加成功';
-                                vm.productData.push(item)
+                                vm.tipsDialog = true;
+                                vm.tipMsg = res.data.msg;
+                                vm.productData.push(item);
                             }
 
                         }, (err) => {
@@ -245,14 +259,14 @@
                     console.log(data)
                     vm.$http.post(url, data).then(
                         (res) => {
-                            if (res.data.ret_code === 0) {
+                            if (res.data.code === 0) {
                                 vm.username = data.userName;
                                 vm.isLogined = true;
                                 vm.dialogVisible = false;
                                 vm.getUser()
                             } else {
                                 vm.isError = true;
-                                vm.errorMsg = res.data.ret_msg;
+                                vm.errorMsg = res.data.msg;
                             }
                             console.log(res.data)
                         }, (err) => {
@@ -267,7 +281,7 @@
                     vm.$http.get(url).then(
                         (res) => {
                             console.log(res.data)
-                            if (res.data.msg == 'logined') {
+                            if (res.data.code === 1) {
                                 vm.username = res.data.userName;
                                 vm.isLogined = true;
                             }
@@ -288,6 +302,59 @@
                         }
                     )
 
+                },
+                //搜索
+                searchClick(item) {
+                    var vm = this;
+                    var url = this.apiBase + 'productList/getSearch?name=' + item;
+                    vm.$http.get(url).then(
+                        (res) => {
+                            vm.productData = res.data
+                        }, (err) => {
+                            console.log(err)
+                        }
+                    )
+                },
+                //获取选中项
+                getSelection(sel) {
+                    var idArr = [];
+                    for (var i = 0, len = sel.length; i < len; i++) {
+                        idArr.push(sel[i]._id)
+                    };
+                    this.selectedItem = idArr;
+                },
+                //删除选中项
+                del(item) {
+                    var vm = this;
+                    if (item.length < 1) {
+                        vm.tipsDialog = true;
+                        vm.tipMsg = "请先选中！"
+                    } else {
+                        var url = this.apiBase + 'productList/delProduct'
+                        vm.$http.post(url, {
+                            idArr: item
+                        }).then(
+                            (res) => {
+                                vm.tipsDialog = true;
+                                if (res.data.code === 0) {
+                                    vm.tipMsg = res.data.msg;
+                                } else if (res.data.code === 1) {
+                                    vm.tipMsg = res.data.msg;
+                                    vm.getProductList()
+                                }
+                            }, (err) => {
+                                console.log(err)
+                            }
+                        )
+                    }
+
+                },
+                update(item) {
+                    var vm = this;
+                    if (item.length != 1) {
+                        vm.tipsDialog = true;
+                        vm.tipMsg = "请选择一条！"
+                    }
                 }
             }
         })

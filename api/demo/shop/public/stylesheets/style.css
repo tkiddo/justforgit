@@ -17,6 +17,12 @@
 .flex-end {
   justify-content: flex-end; }
 
+.flex-bet {
+  justify-content: space-between; }
+
+.flex-around {
+  justify-content: space-around; }
+
 .flex-column {
   flex-direction: column; }
 

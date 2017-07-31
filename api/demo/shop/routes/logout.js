@@ -3,7 +3,7 @@ var router = express.Router();
 router.route('/')
     .get(function(req, res) {
         req.session.loginUser = null;
-        res.json({ msg: 'logout successed' })
+        res.json({ code: 1, msg: '登出成功！' })
     })
 
 module.exports = router;
