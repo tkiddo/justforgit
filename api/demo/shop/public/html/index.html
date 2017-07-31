@@ -112,14 +112,14 @@
                     <el-form-item label="描述">
                         <el-input v-model="productForm.description" placeholder="请输入描述"></el-input>
                     </el-form-item>
-                    <el-form-item label="价格">
-                        <el-input v-model="productForm.price" placeholder="请输入价格" :rules="[{ type: 'number', message: '售价必须为数字值'}]"></el-input>
+                    <el-form-item label="价格" :rules="{ type: 'number', message: '售价必须为数字值'}">
+                        <el-input v-model="productForm.price" placeholder="请输入价格"></el-input>
                     </el-form-item>
-                    <el-form-item label="库存">
-                        <el-input v-model="productForm.countInHold" placeholder="请输入库存" :rules="[{ type: 'number', message: '库存必须为数字值'}]"></el-input>
+                    <el-form-item label="库存" :rules="[{ type: 'number', message: '库存必须为数字值'}]">
+                        <el-input v-model="productForm.countInHold" placeholder="请输入库存"></el-input>
                     </el-form-item>
-                    <el-form-item label="已售">
-                        <el-input v-model="productForm.countSaled" placeholder="请输入已售" :rules="[{ type: 'number', message: '已售必须为数字值'}]"></el-input>
+                    <el-form-item label="已售" :rules="[{ type: 'number', message: '已售必须为数字值'}]">
+                        <el-input v-model="productForm.countSaled" placeholder="请输入已售"></el-input>
                     </el-form-item>
                     <el-form-item label="图片">
                         <el-input v-model="productForm.imgPath" placeholder="请输入图片"></el-input>
@@ -239,7 +239,16 @@
                 },
                 //重置表单
                 setDefault() {
-                    vm.productForm = {};
+                    vm.productForm = {
+                        name: '',
+                        description: '',
+                        price: 0,
+                        countInHold: 0,
+                        countSaled: 0,
+                        imgPath: '',
+                        date: '',
+                        store: ''
+                    };
                     vm.isUpdate = false;
                 },
                 // 添加商品
