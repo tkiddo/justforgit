@@ -1,0 +1,19 @@
+{
+  "name": "learning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "debug.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "eventproxy": "^1.0.0",
+    "express": "^4.15.3",
+    "should": "^11.2.1",
+    "superagent": "^3.5.2",
+    "utility": "^1.12.0"
+  }
+}
