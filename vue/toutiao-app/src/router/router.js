@@ -9,18 +9,27 @@ import my from '../views/my.vue'
 
 
 const routes = [{
-    path: '/home',
-    component: home
-}, {
-    path: '/collect',
-    component: collect
-}, {
-    path: '/care',
-    component: care
-}, {
-    path: '/my',
-    component: my
-}]
+        path: '/home/:type',
+        component: home
+    }, {
+        path: '/collect',
+        component: collect
+    }, {
+        path: '/care',
+        component: care
+    }, {
+        path: '/my',
+        component: my
+    },
+    {
+        path: '*',
+        redirect: '/home/all?type=__all__'
+    },
+    {
+        path: '',
+        redirect: '/home/all?type=__all__'
+    }
+]
 
 const scrollBehavior = (to, from, savePosition) => {
     if (savePosition) {
