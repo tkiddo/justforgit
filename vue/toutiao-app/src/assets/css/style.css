@@ -1,0 +1,39 @@
+.flex {
+    display: flex;
+}
+
+.fg {
+    flex: 1;
+}
+
+.j-center {
+    justify-content: center;
+}
+
+.a-center {
+    align-items: center;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+.flex-bet {
+    justify-content: space-between;
+}
+
+.flex-around {
+    justify-content: space-around;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+li {
+    list-style: none
+}
+
+a {
+    text-decoration: none
+}
