@@ -19,8 +19,10 @@ const state = {
         news_military: [],
         news_world: [],
         news_fashion: []
-
-    }
+    },
+    routerChange: true, //路由变化
+    ifReturnMsg: true, //是否有数据返回
+    downLoadMore: true, //是否加载更多
 }
 
 export default new Vuex.Store({

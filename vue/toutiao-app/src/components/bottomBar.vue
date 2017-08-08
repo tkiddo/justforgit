@@ -33,12 +33,14 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/css/setting.scss';
 .bottom-nav{
-    padding:10px 0;
+    padding:5px 0;
     width:100%;
     position: fixed;
     bottom: 0;
     left: 0;
     border-top:1px solid #f4f4f4;
+    background: #fff;
+    z-index: 1111;
     .nav-item{
         width:25%;
         text-align: center;
