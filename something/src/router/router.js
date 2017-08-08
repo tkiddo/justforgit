@@ -7,17 +7,18 @@ import tips from '../views/tips.vue'
 import demos from '../views/demos.vue'
 import list from '../views/list.vue'
 import map from '../views/map.vue'
+import passageList from '../views/passageList.vue'
 const router = new VueRouter({
     routes: [{
         path: '/home',
         component: home
     }, {
+        path: '/passageList',
+        component: passageList
+    }, {
         path: '/passage',
         component: passage,
-        children: [
-            { path: 'list/:class', component: list, name: 'list' },
-            { path: 'list', redirect: 'list/html' }
-        ]
+        name: 'passage'
     }, {
         path: '/tips',
         component: tips

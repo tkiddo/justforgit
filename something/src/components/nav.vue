@@ -12,7 +12,7 @@
 	  data(){
 	  	return {
 	  		btnList:[{
-	  			path:'/passage',text:'Passage'
+	  			path:'/passageList',text:'Passage'
 	  		},{
 	  			path:'/tips',text:'Tips'
 	  		},{
