@@ -50,6 +50,7 @@ export default {
         axios.get('http://localhost:3000/collect').then(
             (res) => {
                 commit(type.GETCOLLECT, res.data.data);
+                commit(type.CHANGE_LOADING_STATE, false);
             }, (err) => {
                 console.log(err)
             }

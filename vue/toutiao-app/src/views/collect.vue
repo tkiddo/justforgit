@@ -7,7 +7,8 @@
               <i class="el-icon-share"></i>
           </div>
       </headerBar>
-      <div class="collectList">
+      <div v-show="loading" v-loading="loading" element-loading-text="拼命加载中" style="width: 100%" class="loading"></div>
+      <div class="collectList" v-show='!loading'>
           <div v-for="(item,index) in collectList" :key='index' class="flex collectItem a-center" @click="goRouter(item)">
               <div class="fg colText">
                   <h4>{{item.title}}</h4>
@@ -27,6 +28,7 @@
 import bottomBar from '../components/bottomBar.vue'
 import headerBar from '../components/headerBar.vue'
 import {mapActions,mapGetters} from 'vuex'
+import * as type from '../store/mutation-types'
 export default {
     components:{
         bottomBar,
@@ -34,12 +36,13 @@ export default {
     },
     computed:{
         ...mapGetters([
-            'collectList'
+            'collectList',
+            'loading'
         ])
     },
     mounted(){
+        // this.$store.commit(type.CHANGE_LOADING_STATE,true)
         this.getCollect();
-        console.log(this.collectList)
     },
     methods:{
         ...mapActions([

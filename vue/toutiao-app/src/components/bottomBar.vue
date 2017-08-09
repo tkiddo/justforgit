@@ -20,11 +20,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import * as type from '../store/mutation-types'
 export default {
     data(){
         return{
 
         }
+    },
+    computed:{
+        ...mapGetters([
+            'loading'
+        ])
+
     }
   
 }

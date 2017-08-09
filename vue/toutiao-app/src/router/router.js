@@ -29,7 +29,7 @@ const routes = [{
     path: '*',
     redirect: '/home/all?type=__all__'
 }, {
-    path: '',
+    path: '/',
     redirect: '/home/all?type=__all__'
 }]
 
