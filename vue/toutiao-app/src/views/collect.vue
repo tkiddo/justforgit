@@ -50,17 +50,17 @@ export default {
         },
         goRouter(item){
             this.$router.push({name:'newsdetail',params:{
-                            id:item.tag_id,
-                            title:item.title,
-                            media_info:item.media_info,
-                            media_name:item.media_name,
-                            datetime:item.datetime,
-                            abstract:item.abstract,
-                            image_list:item.image_list,
-                            repin_count:item.repin_count,
-                            comment_count:item.comment_count,
-                            keywords:item.keywords,
-                            collected:item.collected,}})
+                id:item.tag_id,
+                title:item.title,
+                media_info:item.media_info,
+                media_name:item.media_name,
+                datetime:item.datetime,
+                abstract:item.abstract,
+                image_list:item.image_list,
+                repin_count:item.repin_count,
+                comment_count:item.comment_count,
+                keywords:item.keywords,
+                collected:item.collected,}})
         }
     }
 

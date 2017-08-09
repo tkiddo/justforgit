@@ -16,7 +16,7 @@
       </div>
       <div v-show="loading" v-loading="loading" element-loading-text="拼命加载中" style="width: 100%" class="loading"></div>
       <el-alert v-show="!ifReturnMsg" class="newsLoadError" title="暂无更新..." type="error" description="此频道暂无更新，请先休息一下！" show-icon></el-alert>
-      <transition enter-active-class="bounceInLeft" leave-active-class="bounceOutRight">
+      <transition enter-active-class="animated bounceInLeft" leave-active-class="animated bounceOutRight">
           <ul class="listCon" v-show="!loading&&ifReturnMsg">
               <router-link
               v-for="(val,index) in listCon"

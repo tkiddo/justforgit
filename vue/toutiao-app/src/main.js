@@ -5,6 +5,7 @@ import elementUi from 'element-ui'
 import VueLazyload from 'vue-lazyload'
 import store from './store/index'
 import '../src/assets/css/style.css'
+import '../src/assets/css/animate.css'
 Vue.use(elementUi)
 
 Vue.use(VueLazyload, {
