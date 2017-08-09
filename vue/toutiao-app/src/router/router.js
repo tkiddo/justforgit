@@ -6,30 +6,32 @@ import home from '../views/home.vue'
 import collect from '../views/collect.vue'
 import care from '../views/care.vue'
 import my from '../views/my.vue'
+import newsdetail from '../views/newsdetail.vue'
 
 
 const routes = [{
-        path: '/home/:type',
-        component: home
-    }, {
-        path: '/collect',
-        component: collect
-    }, {
-        path: '/care',
-        component: care
-    }, {
-        path: '/my',
-        component: my
-    },
-    {
-        path: '*',
-        redirect: '/home/all?type=__all__'
-    },
-    {
-        path: '',
-        redirect: '/home/all?type=__all__'
-    }
-]
+    path: '/home/:type',
+    component: home
+}, {
+    path: '/collect',
+    component: collect
+}, {
+    path: '/care',
+    component: care
+}, {
+    path: '/my',
+    component: my
+}, {
+    path: '/newsdetail/:id',
+    component: newsdetail,
+    name: 'newsdetail'
+}, {
+    path: '*',
+    redirect: '/home/all?type=__all__'
+}, {
+    path: '',
+    redirect: '/home/all?type=__all__'
+}]
 
 const scrollBehavior = (to, from, savePosition) => {
     if (savePosition) {

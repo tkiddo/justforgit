@@ -23,6 +23,7 @@ const state = {
     routerChange: true, //路由变化
     ifReturnMsg: true, //是否有数据返回
     downLoadMore: true, //是否加载更多
+    collectList: [], //收藏列表
 }
 
 export default new Vuex.Store({

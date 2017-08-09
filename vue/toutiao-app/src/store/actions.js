@@ -41,6 +41,18 @@ export default {
             )
         }
         console.log(pay.kind)
-
+    },
+    //collect
+    getCollect({
+        commit,
+        state
+    }) {
+        axios.get('http://localhost:3000/collect').then(
+            (res) => {
+                commit(type.GETCOLLECT, res.data.data);
+            }, (err) => {
+                console.log(err)
+            }
+        )
     }
 }

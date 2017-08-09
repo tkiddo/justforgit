@@ -183,7 +183,7 @@ export default {
         text-align: center;
     }
     i{
-        padding:0 10px
+        padding:0 10px;
     }
 }
 .outerScroll{

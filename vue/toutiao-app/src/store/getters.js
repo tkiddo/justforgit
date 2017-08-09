@@ -5,5 +5,6 @@ export default {
     list: state => state.list,
     loading: state => state.loading,
     ifReturnMsg: state => state.ifReturnMsg,
-    downLoadMore: state => state.downLoadMore
+    downLoadMore: state => state.downLoadMore,
+    collectList: state => state.collectList
 }

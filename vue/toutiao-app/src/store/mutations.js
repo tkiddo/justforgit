@@ -18,5 +18,14 @@ export default {
     //是否加载更多
     [type.PULLDOWNBTN](state, flag) {
         state.downLoadMore = flag;
+    },
+    //获取收藏列表
+    [type.GETCOLLECT](state, payload) {
+        // for (var item in payload) {
+        //     state.collectList.push(payload[item])
+        // }
+        for (var i = 0; i < payload.length; i++) {
+            state.collectList.push(payload[i]);
+        }
     }
 }

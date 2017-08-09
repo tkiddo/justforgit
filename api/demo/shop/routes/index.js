@@ -13,4 +13,5 @@ module.exports = function(app) {
     app.use('/productList', require('./productList'));
     app.use('/login', require('./login'));
     app.use('/logout', require('./logout'));
+    app.use('/collect', require('./collect'));
 }
