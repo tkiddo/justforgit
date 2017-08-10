@@ -7,9 +7,9 @@ router.route('/')
         users.find({ "userName": req.body.userName, "password": req.body.password }, function(err, user) {
             if (user.length != 0) {
                 req.session.loginUser = user[0].userName;
-                res.json({ code: 0, msg: "登录成功！" })
+                res.json({ code: 1, msg: "登录成功！", userName: req.body.userName })
             } else {
-                res.json({ code: 1, msg: '用户名或者密码错误！' })
+                res.json({ code: 0, msg: '用户名或者密码错误！' })
             }
         })
     })

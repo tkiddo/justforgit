@@ -7,8 +7,8 @@
               <i class="el-icon-share"></i>
           </div>
       </headerBar>
-      <div v-show="loading" v-loading="loading" element-loading-text="拼命加载中" style="width: 100%" class="loading"></div>
-      <div class="collectList" v-show='!loading'>
+      <!-- <div v-show="loading" v-loading="loading" element-loading-text="拼命加载中" style="width: 100%" class="loading"></div> -->
+      <div class="collectList">
           <div v-for="(item,index) in collectList" :key='index' class="flex collectItem a-center" @click="goRouter(item)">
               <div class="fg colText">
                   <h4>{{item.title}}</h4>

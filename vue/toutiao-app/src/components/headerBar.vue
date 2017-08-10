@@ -5,6 +5,7 @@
         <slot name='collect'></slot>
         <slot name='care'></slot>
         <slot name='my'></slot>
+        <slot name='login'></slot>
     </header>
 </template>
 

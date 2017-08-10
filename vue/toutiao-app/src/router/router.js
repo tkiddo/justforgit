@@ -7,6 +7,7 @@ import collect from '../views/collect.vue'
 import care from '../views/care.vue'
 import my from '../views/my.vue'
 import newsdetail from '../views/newsdetail.vue'
+import login from '../views/login.vue'
 
 
 const routes = [{
@@ -20,7 +21,8 @@ const routes = [{
     component: care
 }, {
     path: '/my',
-    component: my
+    component: my,
+    name: 'my'
 }, {
     path: '/newsdetail/:id',
     component: newsdetail,
@@ -31,6 +33,10 @@ const routes = [{
 }, {
     path: '/',
     redirect: '/home/all?type=__all__'
+}, {
+    path: '/login',
+    component: login,
+    name: 'login'
 }]
 
 const scrollBehavior = (to, from, savePosition) => {

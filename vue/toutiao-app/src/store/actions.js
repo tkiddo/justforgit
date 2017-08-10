@@ -55,5 +55,46 @@ export default {
                 console.log(err)
             }
         )
+    },
+    //获取登录状态
+    getLoginStatus({
+        commit,
+        state
+    }) {
+        axios.get('http://localhost:3000/login').then(
+            (res) => {
+                commit(type.GETLOGINSTATUS, res.data)
+            }, (err) => {
+                console.log(err)
+            }
+        )
+    },
+    //登录
+    login({
+        commit,
+        state
+    }, data) {
+        console.log(data)
+        axios.post('http://localhost:3000/login', data).then(
+            (res) => {
+                commit(type.GETLOGINSTATUS, res.data)
+            }, (err) => {
+                console.log(err)
+            }
+        )
+    },
+    //登出
+    logout({
+        commit,
+        state
+    }) {
+        axios.get('http://localhost:3000/logout').then(
+            (res) => {
+                commit(type.GETLOGINSTATUS, { code: 0 })
+            }, (err) => {
+                console.log(err)
+            }
+
+        )
     }
 }

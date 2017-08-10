@@ -27,5 +27,19 @@ export default {
         for (var i = 0; i < payload.length; i++) {
             state.collectList.push(payload[i]);
         }
-    }
+    },
+    //获取登录状态
+    [type.GETLOGINSTATUS](state, payload) {
+        console.log(payload)
+        if (payload.code === 1) {
+            state.loginStatus = true;
+            state.userName = payload.userName;
+        } else {
+            state.loginStatus = false;
+        }
+    },
+    //userName
+    // [type.GETUSERDATA](state, user) {
+    //     state.userName = user
+    // }
 }
