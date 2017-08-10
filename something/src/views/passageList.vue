@@ -45,6 +45,16 @@ export default{
                         link:'http://blog.csdn.net/liusaint1992/article/details/51277751'
                     }
                 }
+            },{
+                title:'webpack',
+                path:{
+                    name:'passage',
+                    params:{
+                        title:'webpack',
+                        answer:'<a href="https://blog.guowenfh.com/2016/03/24/vue-webpack-01-base/">webpack入坑之旅</a>',
+                        link:'http://www.cnblogs.com/QxQstar/p/5961387.html'
+                    }
+                }
             }]
         }
     }
