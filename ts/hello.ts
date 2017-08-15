@@ -52,3 +52,15 @@ sum(1,2);
 let sum2:(x:number,y:number)=>number=function(x:number,y:number){
     return x+y;
 }
+
+class Animal{
+    public name;
+    public constructor(name){
+        this.name = name;
+    }
+}
+
+let one = new Animal('kkal');
+console.log(one.name);
+one.name = 'fsdf';
+console.log(one.name)
