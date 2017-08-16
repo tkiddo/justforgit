@@ -4,6 +4,7 @@ import ElemnetUi from 'element-ui'
 Vue.use(ElemnetUi);
 import router from '../src/route/router'
 import store from '../src/store/index'
+
 new Vue({
     el: '#app',
     router,
