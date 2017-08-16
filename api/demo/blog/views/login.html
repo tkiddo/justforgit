@@ -62,6 +62,10 @@
             $.ajax({
                 url: 'http://localhost:3000/login',
                 type: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
                 success: function(res) {
                     console.log(res)
                 },
