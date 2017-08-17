@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http');
 var path = require('path');
-var routes = require('./router/index')
+var routes = require('./router/index');
+var ejs = require('ejs');
 
 // cors
 app.all('*', function(req, res, next) {
@@ -16,7 +17,10 @@ app.all('*', function(req, res, next) {
     if (req.method == "OPTIONS") res.send(200); /*让options请求快速返回*/
     else next();
 });
-
+app.use(express.static(path.join(__dirname, 'static')));
+app.set('views', path.join(__dirname, 'views'));
+app.engine('.html', require('ejs').__express);
+app.set('view engine', 'html');
 
 // session
 var session = require('express-session');
@@ -49,6 +53,6 @@ app.use(session({
 
 routes(app)
 
-http.createServer(app).listen(3000, function(req, res) {
-    console.log('listening on port 3000')
+http.createServer(app).listen(8080, function(req, res) {
+    console.log('listening on port 8080')
 })
