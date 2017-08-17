@@ -18,7 +18,7 @@ app.all('*', function(req, res, next) {
     else next();
 });
 app.use(express.static(path.join(__dirname, 'static')));
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'static/views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
@@ -51,7 +51,7 @@ app.use(session({
     }
 }))
 
-routes(app)
+routes(app);
 
 http.createServer(app).listen(8080, function(req, res) {
     console.log('listening on port 8080')
