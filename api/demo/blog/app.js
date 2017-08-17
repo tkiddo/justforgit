@@ -19,7 +19,7 @@ app.all('*', function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'static')));
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.html', require('ejs').__express);
+app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 // session
