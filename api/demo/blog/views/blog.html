@@ -5,7 +5,18 @@
 
     <body>
         <div class="container-fluid">
-            <h3>Blog </h3>
+            <header class="flex a-center">
+                <h3 class="fg" style="margin:0">Blog </h3>
+                <% if(user){%>
+                    <span>
+                    <%= user%>
+                </span>
+                    <button class="btn btn-default btn-sm" id="logout">logout</button>
+                    <% } else { %>
+                        <a class="btn btn-default btn-sm" href="http://localhost:8000/views/login">login</a>
+                        <% } %>
+            </header>
+
             <% for(var i = 0;i<list.length;i++){ %>
                 <div class="flex j-center list a-center">
                     <img src="<%=list[i].image%>" alt="" class="itemImg">
@@ -22,8 +33,6 @@
                             <span class="glyphicon glyphicon-dashboard">  <%=list[i].createtime%></span>
                         </p>
                     </div>
-
-
                 </div>
                 <% } %>
         </div>
@@ -40,6 +49,21 @@
                     error: function(err) {
                         console.log(err)
                     }
+                })
+
+                $('#logout').on('click', function() {
+                    $.ajax({
+                        url: 'http://localhost:8000/logout',
+                        type: 'GET',
+                        success: function(res) {
+                            if (res.code === 1) {
+                                window.location.reload()
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
                 })
 
             })
