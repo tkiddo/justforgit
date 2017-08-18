@@ -7,20 +7,22 @@
         <div class="container-fluid">
             <h3>Blog </h3>
             <% for(var i = 0;i<list.length;i++){ %>
-                <div>
-                    <img src="<%=list[i].image%>" alt="">
-                    <p>
-                        <%=list[i].title%>
-                    </p>
-                    <p>
-                        <%=list[i].content%>
+                <div class="flex j-center list a-center">
+                    <img src="<%=list[i].image%>" alt="" class="itemImg">
+                    <div class="fg">
+                        <h4>
+                            <%=list[i].title%>
+                        </h4>
+                        <p>
+                            <%=list[i].content%>
+                        </p>
+                        <p class="tips">
+                            <span class="glyphicon glyphicon-user">  <%=list[i].username%></span>
+                            <span class="glyphicon glyphicon-hand-right">  <%=list[i].click%></span>
+                            <span class="glyphicon glyphicon-dashboard">  <%=list[i].createtime%></span>
+                        </p>
+                    </div>
 
-                    </p>
-                    <p>
-                        <span><%=list[i].click%></span>
-                        <span><%=list[i].createtime%></span>
-                        <span><%=list[i].username%></span>
-                    </p>
 
                 </div>
                 <% } %>

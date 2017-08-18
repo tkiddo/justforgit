@@ -32,3 +32,35 @@
     text-align: left;
     color: orangered;
 }
+
+.flex {
+    display: flex
+}
+
+.j-center {
+    justify-content: center
+}
+
+.a-center {
+    align-items: center;
+}
+
+.fg {
+    flex: 1;
+}
+
+.list {
+    padding: 10px;
+    border: 1px solid #f4f4f4;
+}
+
+.itemImg {
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+}
+
+.tips>span {
+    margin: 0 15px;
+    text-indent: 10px;
+}
