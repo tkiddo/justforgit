@@ -24,7 +24,7 @@
                 $("#userName").on('blur', function() {
                     var val = $("#userName").val();
                     $.ajax({
-                        url: 'http://localhost:8000/signup',
+                        url: config.apiUrl + 'signup',
                         type: 'GET',
                         data: {
                             name: val
@@ -43,7 +43,7 @@
                 $("#signUp").on('click', function() {
                     if ($('.msg').text() === 'name is ok') {
                         $.ajax({
-                            url: 'http://localhost:8000/signup',
+                            url: config.apiUrl + 'signup',
                             type: 'POST',
                             data: {
                                 name: $('#userName').val(),
@@ -51,7 +51,7 @@
                             },
                             success: function(res) {
                                 if (res.code === 1) {
-                                    window.location.href = "http://localhost:8000/views/login"
+                                    window.location.href = config.apiUrl + "views/login"
                                 }
                             },
                             error: function(err) {

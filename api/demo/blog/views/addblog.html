@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% include head.ejs %>
+
+    <body>
+        <div class="container-fluid">
+            <header class="flex a-center">
+                <h3 class="fg" style="margin:0">new Blog </h3>
+                <% if(username){%>
+                    <span style="padding:0 15px">
+                    <%= username%>
+                </span>
+                    <button class="btn btn-default btn-sm" id="logout">logout</button>
+                    <% } else { %>
+                        <a class="btn btn-default btn-sm" href="http://localhost:8000/views/login">login</a>
+                        <% } %>
+            </header>
+        </div>
+
+        <div class="blogForm">
+            <form>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" value="" class="form-control small-ipt">
+                </div>
+                <div class="form-group">
+                    <label for="title">Abstract</label>
+                    <input type="text" name="abstract" value="" class="form-control small-ipt">
+                </div>
+                <div class="form-group">
+                    <label for="title">Content</label>
+                    <textarea class="form-control" rows="5" id='content'></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="title">Img</label>
+                    <input type="file">
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-default" id="addNew">提交</div>
+                </div>
+            </form>
+        </div>
+        <script src="/javascripts/dateFormat.js"></script>
+        <script>
+            $(function() {
+                $("#addNew").on('click', function() {
+                    $.ajax({
+                        url: config.apiUrl + 'blog/add',
+                        data: {
+                            title: $('input[name="title"]').val(),
+                            abstract: $('input[name="abstract"]').val(),
+                            content: $('#content').val(),
+                            click: Math.floor(Math.random() * 100),
+                            image: 'https://cn.vuejs.org/images/logo.png',
+                            createtime: new Date().format('yyyy-MM-dd')
+                        },
+                        type: 'POST',
+                        success: function(res) {
+                            console.log(res)
+                            if (res.code === 2) {
+                                window.location.href = config.apiUrl + 'views/login'
+                            } else if (res.code === 1) {
+                                window.location.href = config.apiUrl + 'views/blog'
+                            } else {
+                                console.log(res)
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+                })
+            })
+
+
+            function dateFormat(date) {}
+        </script>
+
+    </body>
+
+</html>

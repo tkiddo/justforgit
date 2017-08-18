@@ -7,16 +7,18 @@
         <div class="container-fluid">
             <header class="flex a-center">
                 <h3 class="fg" style="margin:0">Blog </h3>
-                <% if(user){%>
-                    <span>
-                    <%= user%>
+                <% if(username){%>
+                    <span style="padding:0 15px">
+                    <%= username%>
                 </span>
                     <button class="btn btn-default btn-sm" id="logout">logout</button>
                     <% } else { %>
                         <a class="btn btn-default btn-sm" href="http://localhost:8000/views/login">login</a>
                         <% } %>
             </header>
-
+            <div class="menu">
+                <a href="http://localhost:8000/views/addblog" class="btn btn-default">new Blog</a>
+            </div>
             <% for(var i = 0;i<list.length;i++){ %>
                 <div class="flex j-center list a-center">
                     <img src="<%=list[i].image%>" alt="" class="itemImg">
@@ -25,7 +27,7 @@
                             <%=list[i].title%>
                         </h4>
                         <p>
-                            <%=list[i].content%>
+                            <%=list[i].abstract%>
                         </p>
                         <p class="tips">
                             <span class="glyphicon glyphicon-user">  <%=list[i].username%></span>
@@ -41,7 +43,7 @@
         <script>
             $(function() {
                 $.ajax({
-                    url: 'http://localhost:8000/login',
+                    url: config.apiUrl + 'login',
                     type: 'GET',
                     success: function(res) {
                         console.log(res)
@@ -53,11 +55,11 @@
 
                 $('#logout').on('click', function() {
                     $.ajax({
-                        url: 'http://localhost:8000/logout',
+                        url: config.apiUrl + 'logout',
                         type: 'GET',
                         success: function(res) {
                             if (res.code === 1) {
-                                window.location.reload()
+                                window.location.href = config.apiUrl + 'views/login'
                             }
                         },
                         error: function(err) {

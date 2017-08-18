@@ -53,7 +53,7 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: 30 * 60 * 1000
+        maxAge: 60 * 60 * 1000
     }
 }))
 routes(app);

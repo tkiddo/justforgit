@@ -68,3 +68,17 @@
 header {
     padding: 10px;
 }
+
+.menu {
+    padding: 10px;
+    padding-left: 0;
+}
+
+.blogForm {
+    padding: 20px;
+    padding-top: 10px;
+}
+
+.small-ipt {
+    width: 50% !important;
+}
