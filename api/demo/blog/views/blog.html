@@ -3,7 +3,28 @@
 
 <% include head.ejs %>
 
-    <body class="bg">
+    <body>
+        <div class="container-fluid">
+            <h3>Blog </h3>
+            <% for(var i = 0;i<list.length;i++){ %>
+                <div>
+                    <img src="<%=list[i].image%>" alt="">
+                    <p>
+                        <%=list[i].title%>
+                    </p>
+                    <p>
+                        <%=list[i].content%>
+
+                    </p>
+                    <p>
+                        <span><%=list[i].click%></span>
+                        <span><%=list[i].createtime%></span>
+                        <span><%=list[i].username%></span>
+                    </p>
+
+                </div>
+                <% } %>
+        </div>
 
 
         <script>

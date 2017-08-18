@@ -16,6 +16,8 @@ var userModel = mongoose.model('user', userSchema, 'user');
 
 var blogSchema = new mongoose.Schema({
     userid: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    username: { type: String },
+    image: { type: String },
     title: { type: String },
     abstract: { type: String },
     content: { type: String },

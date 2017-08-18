@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path')
+var path = require('path');
+var { userModel, blogModel } = require('../mongodb/index');
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'signup' });
@@ -12,7 +13,10 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/blog', (req, res) => {
-    res.render('blog', { title: 'blog' })
+    blogModel.find({}, (err, docs) => {
+        if (err) return err;
+        res.render('blog', { title: 'blog', list: docs })
+    })
 })
 
 module.exports = router;
