@@ -3,8 +3,16 @@ var router = express.Router();
 var path = require('path')
 
 router.get('/', (req, res) => {
-    res.render('index.html');
+    res.render('index', { title: 'signup' });
     // res.sendFile('F:/gitfile/api/demo/blog/views/index.html')
+})
+
+router.get('/login', (req, res) => {
+    res.render('login', { title: 'login' })
+})
+
+router.get('/blog', (req, res) => {
+    res.render('blog', { title: 'blog' })
 })
 
 module.exports = router;

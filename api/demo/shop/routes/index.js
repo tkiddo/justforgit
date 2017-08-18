@@ -8,7 +8,8 @@ module.exports = function(app) {
         // } else {
         //     res.json({ msg: 'not logined' })
         // };
-        res.sendFile("F:/gitfile/api/demo/shop/public/html/index.html")
+        // res.sendFile("F:/gitfile/api/demo/shop/public/html/index.html")
+        res.render('index.html')
     });
     app.use('/productList', require('./productList'));
     app.use('/login', require('./login'));

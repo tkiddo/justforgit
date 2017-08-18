@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%include head.ejs %>
+
+    <body class="bg">
+        <div class="deform">
+            <form>
+                <h3>登录</h3>
+                <div class="form-group">
+                    <input class="form-control" id="userName" placeholder="name">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <button type="button" class="btn btn-default" id="login">login</button>
+            </form>
+        </div>
+
+        <script>
+            $(function() {
+                $("#login").on('click', function() {
+                    $.ajax({
+                        url: 'http://localhost:8000/login',
+                        type: 'POST',
+                        data: {
+                            name: $('#userName').val(),
+                            password: $('#password').val()
+                        },
+                        success: function(res) {
+                            if (res.code === 1) {
+                                window.location.href = "http://localhost:8000/views/blog"
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+                })
+
+            })
+        </script>
+
+    </body>
+
+</html>

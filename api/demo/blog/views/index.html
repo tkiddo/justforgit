@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%include head.ejs %>
+
+    <body class="bg">
+        <div class="deform">
+            <form>
+                <h3>注册</h3>
+                <div class="form-group">
+                    <input class="form-control" id="userName" placeholder="name">
+                </div>
+                <div class="msg"></div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <button type="button" class="btn btn-default" id="signUp">SignUp</button>
+                <a href="http://localhost:8000/views/login">已有账户，去登录</a>
+            </form>
+        </div>
+
+        <script>
+            $(function() {
+                $("#userName").on('blur', function() {
+                    var val = $("#userName").val();
+                    $.ajax({
+                        url: 'http://localhost:8000/signup',
+                        type: 'GET',
+                        data: {
+                            name: val
+                        },
+                        success: function(res) {
+                            $('.msg').text(res.msg)
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+                })
+
+
+
+                $("#signUp").on('click', function() {
+                    if ($('.msg').text() === 'name is ok') {
+                        $.ajax({
+                            url: 'http://localhost:8000/signup',
+                            type: 'POST',
+                            data: {
+                                name: $('#userName').val(),
+                                password: $('#password').val()
+                            },
+                            success: function(res) {
+                                if (res.code === 1) {
+                                    window.location.href = "http://localhost:8000/views/login"
+                                }
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+
+            })
+        </script>
+
+    </body>
+
+</html>
