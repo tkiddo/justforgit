@@ -17,7 +17,16 @@ router.post('/add', (req, res) => {
     } else {
         res.json({ code: 2, msg: 'login first' })
     }
+})
 
+router.delete('/delete', (req, res) => {
+    var username = req.session.username;
+    if (username) {
+        blogModel.remove({ "_id": req.query._id }, (err, doc) => {
+            if (err) return res.json({ code: 0, msg: 'delete error' });
+            res.json({ code: 1, msg: 'del successed' })
+        })
+    }
 })
 
 module.exports = router;

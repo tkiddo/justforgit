@@ -35,6 +35,10 @@
                             <span class="glyphicon glyphicon-dashboard">  <%=list[i].createtime%></span>
                         </p>
                     </div>
+                    <div class="flex flex-column">
+                        <div class="btn btn-default btn-primary btn-sm" style="margin-bottom:10px">编辑</div>
+                        <div class="btn btn-default btn-danger btn-sm del" itemId='<%=list[i]._id%>'>删除</div>
+                    </div>
                 </div>
                 <% } %>
         </div>
@@ -60,6 +64,22 @@
                         success: function(res) {
                             if (res.code === 1) {
                                 window.location.href = config.apiUrl + 'views/login'
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+                })
+
+                $('.del').on('click', function(e) {
+                    var _id = $(e.target).attr("itemId");
+                    $.ajax({
+                        type: 'DELETE',
+                        url: config.apiUrl + 'blog/delete?_id=' + _id,
+                        success: function(res) {
+                            if (res.code === 1) {
+                                window.location.reload()
                             }
                         },
                         error: function(err) {

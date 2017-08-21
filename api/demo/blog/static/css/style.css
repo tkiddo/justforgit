@@ -37,6 +37,10 @@
     display: flex
 }
 
+.flex-column {
+    flex-direction: column;
+}
+
 .j-center {
     justify-content: center
 }
