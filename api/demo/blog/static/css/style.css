@@ -82,3 +82,10 @@ header {
 .small-ipt {
     width: 50% !important;
 }
+
+.warning {
+    color: #CF7171;
+    font-size: 14px;
+    line-height: 25px;
+    display: none;
+}
