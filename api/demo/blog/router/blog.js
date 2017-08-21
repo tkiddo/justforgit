@@ -29,4 +29,13 @@ router.delete('/delete', (req, res) => {
     }
 })
 
+router.post('/edit', (req, res) => {
+    blogModel.update({ "_id": req.body._id }, { $set: { title: req.body.title, abstract: req.body.abstract, content: req.body.content, click: req.body.click, image: req.body.image, createtime: req.body.createtime } }, { upsert: true }, (err) => {
+        if (err) {
+            return res.json({ code: 0, msg: 'edit error' })
+        }
+        res.json({ code: 1, msg: 'edit successed' })
+    })
+})
+
 module.exports = router;

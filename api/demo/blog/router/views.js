@@ -20,7 +20,7 @@ router.get('/blog', (req, res) => {
     // });
     blogModel.find({ username: username }).sort({ "_id": -1 }).exec((err, docs) => {
         if (err) return err;
-        console.log(docs)
+        // console.log(docs)
         res.render('blog', { title: 'blog', list: docs, username: username })
     })
 })
@@ -31,5 +31,16 @@ router.get('/addblog', (req, res) => {
         res.render('addblog', { title: 'addblog', username: username })
     }
 })
+
+router.get('/editblog', (req, res) => {
+    var username = req.session.username;
+    if (username) {
+        blogModel.find({ "_id": req.query._id }, (err, doc) => {
+            res.render('editblog', { title: 'editblog', username: username, result: doc[0] })
+        })
+
+    }
+})
+
 
 module.exports = router;
