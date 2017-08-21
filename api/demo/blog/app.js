@@ -22,9 +22,12 @@ app.all('*', function(req, res, next) {
 // all environments
 app.set('port', process.env.PORT || 8000);
 app.use(express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static('static'))
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+
+
 
 
 

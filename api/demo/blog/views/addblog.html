@@ -19,7 +19,7 @@
         </div>
 
         <div class="blogForm">
-            <form>
+            <form enctype='multipart/form-data'>
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" value="" class="form-control small-ipt">
@@ -34,7 +34,8 @@
                 </div>
                 <div class="form-group">
                     <label for="title">Img</label>
-                    <input type="file">
+                    <input type="file" id="file">
+                    <span class="btn btn-default" id="upload">上传</span>
                 </div>
                 <div class="form-group">
                     <div class="btn btn-default" id="addNew">提交</div>
@@ -44,6 +45,32 @@
         <script src="/javascripts/dateFormat.js"></script>
         <script>
             $(function() {
+                $('#upload').on('click', function() {
+                    var file = $('#file').get(0).files[0];
+                    console.log(file);
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    $.ajax({
+                        type: 'POST',
+                        url: config.apiUrl + 'upload',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            console.log(res)
+                        },
+                        error: function(err) {
+                            console.log(err)
+                        }
+                    })
+
+
+                })
+
+
+
+
+
                 $("#addNew").on('click', function() {
                     $.ajax({
                         url: config.apiUrl + 'blog/add',
