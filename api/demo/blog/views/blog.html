@@ -13,16 +13,16 @@
                 </span>
                     <button class="btn btn-default btn-sm" id="logout">logout</button>
                     <% } else { %>
-                        <a class="btn btn-default btn-sm" href="http://localhost:8000/views/login">login</a>
+                        <a class="btn btn-default btn-sm" href="/views/login">login</a>
                         <% } %>
             </header>
             <div class="menu">
-                <a href="http://localhost:8000/views/addblog" class="btn btn-default">new Blog</a>
+                <a href="/views/addblog" class="btn btn-default">new Blog</a>
             </div>
             <% for(var i = 0;i<list.length;i++){ %>
                 <div class="flex j-center list a-center">
                     <img src="<%=list[i].image%>" alt="" class="itemImg">
-                    <div class="fg">
+                    <div class="fg" onclick="goTo('<%=list[i]._id%>')" style="cursor:pointer">
                         <h4>
                             <%=list[i].title%>
                         </h4>
@@ -89,6 +89,11 @@
                 })
 
             })
+
+
+            function goTo(item) {
+                window.location.href = config.apiUrl + 'views/blogdetail?_id=' + item;
+            }
         </script>
 
     </body>

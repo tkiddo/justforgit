@@ -13,7 +13,7 @@
                 </span>
                     <button class="btn btn-default btn-sm" id="logout">logout</button>
                     <% } else { %>
-                        <a class="btn btn-default btn-sm" href="http://localhost:8000/views/login">login</a>
+                        <a class="btn btn-default btn-sm" href="/views/login">login</a>
                         <% } %>
             </header>
         </div>
@@ -34,7 +34,7 @@
                 </div>
                 <form class="form-group" enctype="multipart/form-data">
                     <label for="title">Img</label>
-                    <input type="hidden" name='image'>
+                    <input type="hidden" name='image' value="<%=result.image%>">
                     <div class="flex  a-center">
                         <input type="file" id="file">
                         <span class="btn btn-default" id="upload">上传</span>
@@ -77,6 +77,7 @@
                 })
 
                 $("#editSubmit").on('click', function() {
+                    // console.log($('input[name="image"]').val())
                     $.ajax({
                         url: config.apiUrl + 'blog/edit',
                         data: {
@@ -87,7 +88,6 @@
                             click: Math.floor(Math.random() * 100),
                             image: $('input[name="image"]').val(),
                             createtime: new Date().format('yyyy-MM-dd')
-
                         },
                         type: 'POST',
                         success: function(res) {

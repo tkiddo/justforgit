@@ -42,5 +42,11 @@ router.get('/editblog', (req, res) => {
     }
 })
 
+router.get('/blogdetail', (req, res) => {
+    blogModel.find({ "_id": req.query._id }, (err, doc) => {
+        res.render('blogdetail', { title: 'blogdetail', result: doc[0] })
+    })
+})
+
 
 module.exports = router;

@@ -3,6 +3,14 @@
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .bg {
     background: skyblue;
     position: absolute;
