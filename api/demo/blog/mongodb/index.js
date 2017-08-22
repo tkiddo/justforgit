@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost', (err) => {
+mongoose.connect('mongodb://localhost/blog', (err) => {
     if (err) {
         console.log(err);
         return
