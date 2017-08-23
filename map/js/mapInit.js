@@ -46,3 +46,12 @@ var map = new ol.Map({
     // animations stutter on mobile or slow devices.
     loadTilesWhileAnimating: true
 });
+
+$("#map").on('click', function(e) {
+    var coords = ol.proj.transform(map.getEventCoordinate(e), 'EPSG:3857', 'EPSG:4326');
+    console.log(coords);
+    var pixel = map.getEventPixel(e);
+    console.log(pixel)
+    var feature = map.getFeaturesAtPixel(pixel);
+    console.log(feature)
+})
