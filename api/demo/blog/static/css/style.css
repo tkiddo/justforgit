@@ -110,3 +110,7 @@ header {
     text-align: center;
     margin: 10px 0;
 }
+
+.content {
+    padding-bottom: 80px;
+}
