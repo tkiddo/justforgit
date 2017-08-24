@@ -18,7 +18,7 @@ router.get('/blog', (req, res) => {
     //     if (err) return err;
     //     res.render('blog', { title: 'blog', list: docs, username: username })
     // });
-    blogModel.find({ username: username }).sort({ "_id": -1 }).exec((err, docs) => {
+    blogModel.find({}).sort({ "_id": -1 }).exec((err, docs) => {
         if (err) return err;
         // console.log(docs)
         res.render('blog', { title: 'blog', list: docs, username: username })

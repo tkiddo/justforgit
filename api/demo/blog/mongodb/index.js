@@ -21,7 +21,7 @@ var blogSchema = new mongoose.Schema({
     title: { type: String },
     abstract: { type: String },
     content: { type: String },
-    click: { type: Number },
+    class: { type: String },
     createtime: { type: String }
 })
 
