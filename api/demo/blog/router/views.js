@@ -14,7 +14,7 @@ router.get('/login', (req, res) => {
 
 router.get('/blog', (req, res) => {
     var username = req.session.username;
-    var pagesize = 5;
+    var pagesize = 10;
     var currentpage = req.query.page;
     // blogModel.find({ username: username }, (err, docs) => {
     //     if (err) return err;
