@@ -42,10 +42,15 @@
                                 <div class="btn btn-default btn-danger btn-sm del" itemId='<%=list[i]._id%>'>删除</div>
                             </div>
                         </div>
-
                         <%　}　%>
                 </div>
                 <% } %>
+
+                    <div class="box">
+                        <input type="hidden" value="<%=currentpage%>" id="currentpage">
+                        <input type="hidden" value="<%=totalpage%>" id="totalpage">
+                        <div id="pagination1" class="page fl"></div>
+                    </div>
         </div>
 
 
@@ -63,7 +68,7 @@
                 })
 
                 $(".listItem").on('mouseenter', function() {
-                    console.log($(this).find('.operate-btn'))
+                    // console.log($(this).find('.operate-btn'))
                     $(this).find('.operate-btn').fadeIn()
                 }).on('mouseleave', function() {
                     $(this).find('.operate-btn').fadeOut()
@@ -99,6 +104,14 @@
                         }
                     })
                 })
+
+                $("#pagination1").pagination({
+                    currentPage: $('#currentpage').val(),
+                    totalPage: $('#totalpage').val(),
+                    callback: function(current) {
+                        window.location.href = config.apiUrl + 'views/blog?page=' + current;
+                    }
+                });
 
             })
 

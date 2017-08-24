@@ -14,6 +14,8 @@ router.get('/login', (req, res) => {
 
 router.get('/blog', (req, res) => {
     var username = req.session.username;
+    var pagesize = 5;
+    var currentpage = req.query.page;
     // blogModel.find({ username: username }, (err, docs) => {
     //     if (err) return err;
     //     res.render('blog', { title: 'blog', list: docs, username: username })
@@ -21,7 +23,15 @@ router.get('/blog', (req, res) => {
     blogModel.find({}).sort({ "_id": -1 }).exec((err, docs) => {
         if (err) return err;
         // console.log(docs)
-        res.render('blog', { title: 'blog', list: docs, username: username })
+        var totalpage = Math.ceil(docs.length / pagesize);
+        var list = [];
+        for (var i = pagesize * (currentpage - 1); i < pagesize * currentpage; i++) {
+            if (docs[i]) {
+                list.push(docs[i])
+            }
+        }
+        console.log(list)
+        res.render('blog', { title: 'blog', list: list, username: username, totalpage: totalpage, currentpage: currentpage })
     })
 })
 

@@ -105,3 +105,8 @@ header {
     display: none;
     padding: 0 5px;
 }
+
+.box {
+    text-align: center;
+    margin: 10px 0;
+}
