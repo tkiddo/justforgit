@@ -8,8 +8,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
-    <link href="https://cdn.bootcss.com/openlayers/4.3.1/ol.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/openlayers/4.3.1/ol.js"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.3.1/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v4.3.1/build/ol.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -18,6 +18,44 @@
 
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+        
+        .tooltip-measure {
+            opacity: 1;
+            font-weight: bold;
+        }
+        
+        .tooltip-static {
+            background-color: #ffcc33;
+            color: black;
+            border: 1px solid white;
+        }
+        
+        .tooltip-measure:before,
+        .tooltip-static:before {
+            border-top: 6px solid rgba(0, 0, 0, 0.5);
+            border-right: 6px solid transparent;
+            border-left: 6px solid transparent;
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            margin-left: -7px;
+            left: 50%;
+        }
+        
+        .tooltip-static:before {
+            border-top-color: #ffcc33;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,11 +70,19 @@
         <button class="btn btn-default" id="bounceToSanya">bounceToSanya</button>
         <button class="btn btn-default" id="spinToBeijing">spinToBeijing</button>
         <button class="btn btn-default" id="flyToChengdu">flyToChengdu</button>
+        <form class="form-inline">
+            <label>Measurement type &nbsp;</label>
+            <select id="type">
+              <option value="length">Length (LineString)</option>
+              <option value="area">Area (Polygon)</option>
+            </select>
+        </form>
     </div>
     <div id="map"></div>
     <script src="./js/mapInit.js"></script>
     <script src="./js/zoom.js"></script>
     <script src="./js/viewAnimate.js"></script>
+    <script src="./js/measure.js"></script>
 </body>
 
 </html>
