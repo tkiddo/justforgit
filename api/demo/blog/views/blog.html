@@ -21,7 +21,7 @@
             </div>
             <% for(var i = 0;i<list.length;i++){ %>
                 <div class="flex j-center list a-center listItem">
-                    <img src="<%=list[i].image%>" alt="" class="itemImg">
+                    <img data-original="<%=list[i].image%>" alt="" class="itemImg">
                     <div class="fg" onclick="goTo('<%=list[i]._id%>')" style="cursor:pointer">
                         <h4>
                             <%=list[i].title%>
@@ -66,6 +66,9 @@
                         console.log(err)
                     }
                 })
+                $("img").lazyload({
+                    effect: 'fadeIn'
+                });
 
                 $(".listItem").on('mouseenter', function() {
                     // console.log($(this).find('.operate-btn'))
