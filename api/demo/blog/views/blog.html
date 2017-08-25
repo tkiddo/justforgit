@@ -109,8 +109,8 @@
                 })
 
                 $("#pagination1").pagination({
-                    currentPage: $('#currentpage').val(),
-                    totalPage: $('#totalpage').val(),
+                    currentPage: Number($('#currentpage').val()),
+                    totalPage: Number($('#totalpage').val()),
                     callback: function(current) {
                         window.location.href = config.apiUrl + 'views/blog?page=' + current;
                     }
