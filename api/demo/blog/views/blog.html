@@ -16,8 +16,18 @@
                         <a class="btn btn-default btn-sm" href="/views/login">login</a>
                         <% } %>
             </header>
-            <div class="menu">
+            <div class="menu flex">
                 <a href="/views/addblog" class="btn btn-default">new Blog</a>
+                <div class="fg search">
+                    <div class="input-group">
+                        <input type="hidden" value="<%=search%>" name="searchData">
+                        <input type="text" class="form-control" placeholder="Search for..." name="searchFor">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="search">Go!</button>
+                      </span>
+                    </div>
+                </div>
+                <a href="/views/blog?page=1&search=all" class="btn btn-default" style="margin-right:150px">All Blog</a>
             </div>
             <% for(var i = 0;i<list.length;i++){ %>
                 <div class="flex j-center list a-center listItem">
@@ -112,9 +122,13 @@
                     currentPage: Number($('#currentpage').val()),
                     totalPage: Number($('#totalpage').val()),
                     callback: function(current) {
-                        window.location.href = config.apiUrl + 'views/blog?page=' + current;
+                        window.location.href = config.apiUrl + 'views/blog?search=' + $('input[name="searchData"]').val() + '&page=' + current;
                     }
                 });
+
+                $('#search').on('click', function() {
+                    window.location.href = config.apiUrl + 'views/blog?page=1&search=' + $('input[name="searchFor"]').val();
+                })
 
             })
 

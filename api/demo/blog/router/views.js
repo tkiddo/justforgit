@@ -15,18 +15,37 @@ router.get('/blog', (req, res) => {
     var username = req.session.username;
     var pagesize = 10;
     var currentpage = req.query.page;
-    blogModel.find({}).sort({ "_id": -1 }).exec((err, docs) => {
-        if (err) return err;
-        var totalpage = Math.ceil(docs.length / pagesize);
-        var list = [];
-        for (var i = pagesize * (currentpage - 1); i < pagesize * currentpage; i++) {
-            if (docs[i]) {
-                list.push(docs[i])
+    var search = req.query.search;
+    if (search == 'all') {
+        blogModel.find({}).sort({ "_id": -1 }).exec((err, docs) => {
+            if (err) return err;
+            var totalpage = Math.ceil(docs.length / pagesize);
+            var list = [];
+            for (var i = pagesize * (currentpage - 1); i < pagesize * currentpage; i++) {
+                if (docs[i]) {
+                    list.push(docs[i])
+                }
             }
-        }
-        res.render('blog', { title: 'blog', list: list, username: username, totalpage: totalpage, currentpage: currentpage })
-    })
+            res.render('blog', { title: 'blog', list: list, username: username, totalpage: totalpage, currentpage: currentpage, search: search })
+        })
+    } else {
+        var re = new RegExp(".*" + req.query.search + ".*");
+        var querystr = { 'title': re };
+        blogModel.find(querystr).sort({ "_id": -1 }).exec((err, docs) => {
+            if (err) return err;
+            var totalpage = Math.ceil(docs.length / pagesize);
+            var list = [];
+            for (var i = pagesize * (currentpage - 1); i < pagesize * currentpage; i++) {
+                if (docs[i]) {
+                    list.push(docs[i])
+                }
+            }
+            res.render('blog', { title: 'blog', list: list, username: username, totalpage: totalpage, currentpage: currentpage, search: search })
+        })
+    }
+
 })
+
 
 router.get('/addblog', (req, res) => {
     var username = req.session.username;

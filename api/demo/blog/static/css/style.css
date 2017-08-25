@@ -113,4 +113,11 @@ header {
 
 .content {
     padding-bottom: 80px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.search {
+    margin-left: 15px;
+    margin-right: 15px;
 }

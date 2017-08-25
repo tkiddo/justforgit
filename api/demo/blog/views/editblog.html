@@ -4,7 +4,7 @@
 <% include head.ejs %>
 
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid content">
             <header class="flex a-center">
                 <h3 class="fg" style="margin:0">new Blog </h3>
                 <% if(username){%>
@@ -16,37 +16,38 @@
                         <a class="btn btn-default btn-sm" href="/views/login">login</a>
                         <% } %>
             </header>
-        </div>
-
-        <div class="blogForm">
-            <div>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" value="<%=result.title%>" class="form-control small-ipt">
-                </div>
-                <div class="form-group">
-                    <label for="title">Abstract</label>
-                    <input type="text" name="abstract" value="<%=result.abstract%>" class="form-control small-ipt">
-                </div>
-                <div class="form-group">
-                    <label for="title">Content</label>
-                    <textarea class="form-control" rows="5" id='content'><%=result.content%></textarea>
-                </div>
-                <form class="form-group" enctype="multipart/form-data">
-                    <label for="title">Img</label>
-                    <input type="hidden" name='image' value="<%=result.image%>">
-                    <div class="flex  a-center">
-                        <input type="file" id="file">
-                        <span class="btn btn-default" id="upload">上传</span>
+            <div class="blogForm">
+                <div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" value="<%=result.title%>" class="form-control small-ipt">
                     </div>
-                    <p class="warning"></p>
-                </form>
-                <div class="form-group">
-                    <input type="hidden" name="_id" value="<%=result._id%>">
-                    <div class="btn btn-default" id="editSubmit">提交</div>
+                    <div class="form-group">
+                        <label for="title">Abstract</label>
+                        <input type="text" name="abstract" value="<%=result.abstract%>" class="form-control small-ipt">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Content</label>
+                        <textarea class="form-control" rows="25" id='content'><%=result.content%></textarea>
+                    </div>
+                    <form class="form-group" enctype="multipart/form-data">
+                        <label for="title">Img</label>
+                        <input type="hidden" name='image' value="<%=result.image%>">
+                        <div class="flex  a-center">
+                            <input type="file" id="file">
+                            <span class="btn btn-default" id="upload">上传</span>
+                        </div>
+                        <p class="warning"></p>
+                    </form>
+                    <div class="form-group">
+                        <input type="hidden" name="_id" value="<%=result._id%>">
+                        <div class="btn btn-default" id="editSubmit">提交</div>
+                    </div>
                 </div>
             </div>
         </div>
+
+
         <script src="/javascripts/dateFormat.js"></script>
         <script>
             $(function() {
@@ -95,7 +96,7 @@
                             if (res.code === 2) {
                                 window.location.href = config.apiUrl + 'views/login'
                             } else if (res.code === 1) {
-                                window.location.href = config.apiUrl + 'views/blog?page=1'
+                                window.location.href = config.apiUrl + 'views/blog?page=1&search=all'
                             } else {
                                 console.log(res)
                             }
