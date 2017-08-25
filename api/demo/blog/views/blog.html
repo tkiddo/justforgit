@@ -4,139 +4,130 @@
 <% include head.ejs %>
 
     <body>
-        <div class="container-fluid content">
-            <header class="flex a-center">
-                <h3 class="fg" style="margin:0">Blog </h3>
-                <% if(username){%>
-                    <span style="padding:0 15px">
-                    <%= username%>
-                </span>
-                    <button class="btn btn-default btn-sm" id="logout">logout</button>
-                    <% } else { %>
-                        <a class="btn btn-default btn-sm" href="/views/login">login</a>
-                        <% } %>
-            </header>
-            <div class="menu flex">
-                <a href="/views/addblog" class="btn btn-default">new Blog</a>
-                <div class="fg search">
-                    <div class="input-group">
-                        <input type="hidden" value="<%=search%>" name="searchData">
-                        <input type="text" class="form-control" placeholder="Search for..." name="searchFor">
-                        <span class="input-group-btn">
+        <% include header.ejs %>
+            <div class="container-fluid content">
+
+                <div class="menu flex">
+                    <a href="/views/addblog" class="btn btn-default">new Blog</a>
+                    <div class="fg search">
+                        <div class="input-group">
+                            <input type="hidden" value="<%=search%>" name="searchData">
+                            <input type="text" class="form-control" placeholder="Search for..." name="searchFor">
+                            <span class="input-group-btn">
                         <button class="btn btn-default" type="button" id="search">Go!</button>
                       </span>
-                    </div>
-                </div>
-                <a href="/views/blog?page=1&search=all" class="btn btn-default" style="margin-right:150px">All Blog</a>
-            </div>
-            <% for(var i = 0;i<list.length;i++){ %>
-                <div class="flex j-center list a-center listItem">
-                    <img data-original="<%=list[i].image%>" alt="" class="itemImg">
-                    <div class="fg" onclick="goTo('<%=list[i]._id%>')" style="cursor:pointer">
-                        <h4>
-                            <%=list[i].title%>
-                        </h4>
-                        <p>
-                            <%=list[i].abstract%>
-                        </p>
-                        <p class="tips">
-                            <span class="glyphicon glyphicon-user">  <%=list[i].username%></span>
-                            <span class="glyphicon glyphicon-bookmark">  <%=list[i].class%></span>
-                            <span class="glyphicon glyphicon-dashboard">  <%=list[i].createtime%></span>
-                        </p>
-                    </div>
-                    <% if(list[i].username==username){%>
-                        <div class="operate-btn">
-                            <div class="flex flex-column">
-                                <a class="btn btn-default btn-primary btn-sm" style="margin-bottom:10px" href="/views/editblog?_id=<%=list[i]._id%>">编辑</a>
-                                <div class="btn btn-default btn-danger btn-sm del" itemId='<%=list[i]._id%>'>删除</div>
-                            </div>
                         </div>
-                        <%　}　%>
-                </div>
-                <% } %>
-
-                    <div class="box">
-                        <input type="hidden" value="<%=currentpage%>" id="currentpage">
-                        <input type="hidden" value="<%=totalpage%>" id="totalpage">
-                        <div id="pagination1" class="page fl"></div>
                     </div>
-        </div>
+                    <a href="/views/blog?page=1&search=all" class="btn btn-default" style="margin-right:150px">All Blog</a>
+                </div>
+                <% for(var i = 0;i<list.length;i++){ %>
+                    <div class="flex j-center list a-center listItem">
+                        <img data-original="<%=list[i].image%>" alt="" class="itemImg">
+                        <div class="fg" onclick="goTo('<%=list[i]._id%>')" style="cursor:pointer">
+                            <h4>
+                                <%=list[i].title%>
+                            </h4>
+                            <p>
+                                <%=list[i].abstract%>
+                            </p>
+                            <p class="tips">
+                                <span class="glyphicon glyphicon-user">  <%=list[i].username%></span>
+                                <span class="glyphicon glyphicon-bookmark">  <%=list[i].class%></span>
+                                <span class="glyphicon glyphicon-dashboard">  <%=list[i].createtime%></span>
+                            </p>
+                        </div>
+                        <% if(list[i].username==username){%>
+                            <div class="operate-btn">
+                                <div class="flex flex-column">
+                                    <a class="btn btn-default btn-primary btn-sm" style="margin-bottom:10px" href="/views/editblog?_id=<%=list[i]._id%>">编辑</a>
+                                    <div class="btn btn-default btn-danger btn-sm del" itemId='<%=list[i]._id%>'>删除</div>
+                                </div>
+                            </div>
+                            <%　}　%>
+                    </div>
+                    <% } %>
+
+                        <div class="box">
+                            <input type="hidden" value="<%=currentpage%>" id="currentpage">
+                            <input type="hidden" value="<%=totalpage%>" id="totalpage">
+                            <div id="pagination1" class="page fl"></div>
+                        </div>
+            </div>
 
 
-        <script>
-            $(function() {
-                $.ajax({
-                    url: config.apiUrl + 'login',
-                    type: 'GET',
-                    success: function(res) {
-                        console.log(res)
-                    },
-                    error: function(err) {
-                        console.log(err)
-                    }
-                })
-                $("img").lazyload({
-                    effect: 'fadeIn'
-                });
-
-                $(".listItem").on('mouseenter', function() {
-                    // console.log($(this).find('.operate-btn'))
-                    $(this).find('.operate-btn').fadeIn()
-                }).on('mouseleave', function() {
-                    $(this).find('.operate-btn').fadeOut()
-                })
-
-                $('#logout').on('click', function() {
+            <script>
+                $(function() {
                     $.ajax({
-                        url: config.apiUrl + 'logout',
+                        url: config.apiUrl + 'login',
                         type: 'GET',
                         success: function(res) {
-                            if (res.code === 1) {
-                                window.location.href = config.apiUrl + 'views/login'
-                            }
+                            console.log(res)
                         },
                         error: function(err) {
                             console.log(err)
                         }
                     })
-                })
+                    $("img").lazyload({
+                        effect: 'fadeIn'
+                    });
 
-                $('.del').on('click', function(e) {
-                    var _id = $(e.target).attr("itemId");
-                    $.ajax({
-                        type: 'DELETE',
-                        url: config.apiUrl + 'blog/delete?_id=' + _id,
-                        success: function(res) {
-                            if (res.code === 1) {
-                                window.location.reload()
-                            }
-                        },
-                        error: function(err) {
-                            console.log(err)
-                        }
+                    $(".listItem").on('mouseenter', function() {
+                        // console.log($(this).find('.operate-btn'))
+                        $(this).find('.operate-btn').fadeIn()
+                    }).on('mouseleave', function() {
+                        $(this).find('.operate-btn').fadeOut()
                     })
+
+                    $('#logout').on('click', function() {
+                        $.ajax({
+                            url: config.apiUrl + 'logout',
+                            type: 'GET',
+                            success: function(res) {
+                                if (res.code === 1) {
+                                    window.location.href = config.apiUrl + 'views/login'
+                                }
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    })
+
+                    $('.del').on('click', function(e) {
+                        var _id = $(e.target).attr("itemId");
+                        $.ajax({
+                            type: 'DELETE',
+                            url: config.apiUrl + 'blog/delete?_id=' + _id,
+                            success: function(res) {
+                                if (res.code === 1) {
+                                    window.location.reload()
+                                }
+                            },
+                            error: function(err) {
+                                console.log(err)
+                            }
+                        })
+                    })
+
+                    $("#pagination1").pagination({
+                        currentPage: Number($('#currentpage').val()),
+                        totalPage: Number($('#totalpage').val()),
+                        callback: function(current) {
+                            window.location.href = config.apiUrl + 'views/blog?search=' + $('input[name="searchData"]').val() + '&page=' + current;
+                        }
+                    });
+
+                    $('#search').on('click', function() {
+                        window.location.href = config.apiUrl + 'views/blog?page=1&search=' + $('input[name="searchFor"]').val();
+                    })
+
                 })
 
-                $("#pagination1").pagination({
-                    currentPage: Number($('#currentpage').val()),
-                    totalPage: Number($('#totalpage').val()),
-                    callback: function(current) {
-                        window.location.href = config.apiUrl + 'views/blog?search=' + $('input[name="searchData"]').val() + '&page=' + current;
-                    }
-                });
 
-                $('#search').on('click', function() {
-                    window.location.href = config.apiUrl + 'views/blog?page=1&search=' + $('input[name="searchFor"]').val();
-                })
-
-            })
-
-
-            function goTo(item) {
-                window.location.href = config.apiUrl + 'views/blogdetail?_id=' + item;
-            }
-        </script>
+                function goTo(item) {
+                    window.location.href = config.apiUrl + 'views/blogdetail?_id=' + item;
+                }
+            </script>
 
     </body>
 

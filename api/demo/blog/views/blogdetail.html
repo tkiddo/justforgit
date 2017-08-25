@@ -4,19 +4,20 @@
 <% include head.ejs %>
 
     <body>
-        <div class="container-fluid content">
-            <h3>
-                <%=result.title%>
-            </h3>
-            <h5>
-                <%=result.abstract%>
-            </h5>
-            <div style="text-indent:2rem;font-size:16px">
-                <%=result.content%>
+        <% include header.ejs %>
+            <div class="container-fluid content">
+                <h3>
+                    <%=result.title%>
+                </h3>
+                <h5>
+                    <%=result.abstract%>
+                </h5>
+                <div style="text-indent:2rem;font-size:16px">
+                    <%=result.content%>
+                </div>
             </div>
-        </div>
-        <script>
-        </script>
+            <script>
+            </script>
 
     </body>
 

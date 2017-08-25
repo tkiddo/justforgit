@@ -65,8 +65,9 @@ router.get('/editblog', (req, res) => {
 })
 
 router.get('/blogdetail', (req, res) => {
+    var username = req.session.username;
     blogModel.find({ "_id": req.query._id }, (err, doc) => {
-        res.render('blogdetail', { title: 'blogdetail', result: doc[0] })
+        res.render('blogdetail', { title: 'blogdetail', result: doc[0], username: username })
     })
 })
 

@@ -1,0 +1,11 @@
+<header class="flex a-center container-fluid">
+    <h3 class="fg" style="margin:0;color:#fff">Blog </h3>
+    <% if(username){%>
+        <span style="padding:0 15px;color:#fff">
+                    <%= username%>
+                </span>
+        <button class="btn btn-default btn-sm" id="logout">logout</button>
+        <% } else { %>
+            <a class="btn btn-default btn-sm" href="/views/login">login</a>
+            <% } %>
+</header>
