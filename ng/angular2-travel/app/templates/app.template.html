@@ -1,0 +1,24 @@
+<p>my name is:{{username}}</p>
+<p>my age is:{{age}}</p>
+<p>my fruit is:{{fruit}}</p>
+<ul>
+    <li *ngFor='let fruit of fruitList;let i = index;'>{{i}}--{{fruit.name}}--{{fruit.price}}</li>
+</ul>
+<p *ngIf="fruitList.length > 3">fruitsList's length is bigger than 3</p>
+<p *ngIf="fruitList.length <= 3">fruitsList's length is not bigger than 3</p>
+<button (click)='showMsg()'>click</button>
+<input type="text" (keyup)='keyupHandler1($event)'>
+<p>input value:{{input}}</p>
+
+<h3>todo list</h3>
+<ul>
+    <li *ngFor='let item of itemList;let i = index'>
+        {{item.name}}--status:{{item.status}}
+        <button (click)='removeItem(i)'>delete</button>
+        <button (click)='doneItem(i)'>done</button>
+    </li>
+
+</ul>
+
+<input type="text" #item>
+<button (click)='addItem(item.value)'>add</button>
