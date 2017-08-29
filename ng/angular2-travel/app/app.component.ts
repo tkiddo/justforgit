@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
 import {Fruit} from './class/fruit'
+import {User} from './class/user'
+import {User2} from './class/user2'
+import {UserService} from './services/user.service'
 
 /*
  * 别忘记了使用@前缀
@@ -12,7 +15,10 @@ import {Fruit} from './class/fruit'
     //     <p>my age is:{{age}}</p>
     //     <p>my fruit is:{{fruit}}</p>
     // `
-    templateUrl:'app/templates/app.template.html'
+    templateUrl:'app/templates/app.template.html',
+    providers:[
+        UserService
+    ]
 })
 
 
@@ -31,7 +37,8 @@ export class AppComponent {
     fruitList:Fruit[];
     msg:string;
     showMsg:Function;
-    constructor() {
+    users:User2[];
+    constructor(private userService:UserService) {
         this.username = 'dreamapple';
         this.age = 22;
         this.fruit = 'apple';
@@ -45,6 +52,8 @@ export class AppComponent {
         this.showMsg=function(){
             alert(this.msg)
         }
+        this.users = userService.getUsers()
+
     }
 
     input='';
@@ -63,4 +72,12 @@ export class AppComponent {
     doneItem(id){
         this.itemList[id].status = 'done'
     }
+
+    user = new User('dreamapple','sdfsf@qw.com','noting is bad','apple')
+    get userInfo(){
+        return JSON.stringify(this.user)
+    }
+
+    
+
 }

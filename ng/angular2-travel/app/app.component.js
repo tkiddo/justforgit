@@ -10,15 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var fruit_1 = require('./class/fruit');
+var user_1 = require('./class/user');
+var user_service_1 = require('./services/user.service');
 /*
  * 别忘记了使用@前缀
  * 这里相当于组件视图
  */
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(userService) {
+        this.userService = userService;
         this.input = '';
         this.item = '';
         this.itemList = [];
+        this.user = new user_1.User('dreamapple', 'sdfsf@qw.com', 'noting is bad', 'apple');
         this.username = 'dreamapple';
         this.age = 22;
         this.fruit = 'apple';
@@ -32,6 +36,7 @@ var AppComponent = (function () {
         this.showMsg = function () {
             alert(this.msg);
         };
+        this.users = userService.getUsers();
     }
     AppComponent.prototype.keyupHandler1 = function (event) {
         this.input = event.target.value;
@@ -45,6 +50,13 @@ var AppComponent = (function () {
     AppComponent.prototype.doneItem = function (id) {
         this.itemList[id].status = 'done';
     };
+    Object.defineProperty(AppComponent.prototype, "userInfo", {
+        get: function () {
+            return JSON.stringify(this.user);
+        },
+        enumerable: true,
+        configurable: true
+    });
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
@@ -53,9 +65,12 @@ var AppComponent = (function () {
             //     <p>my age is:{{age}}</p>
             //     <p>my fruit is:{{fruit}}</p>
             // `
-            templateUrl: 'app/templates/app.template.html'
+            templateUrl: 'app/templates/app.template.html',
+            providers: [
+                user_service_1.UserService
+            ]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [user_service_1.UserService])
     ], AppComponent);
     return AppComponent;
 }());
