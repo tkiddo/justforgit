@@ -1,0 +1,6 @@
+<p *ngFor='let hero of heroes'>
+    <span>name:{{hero.name}}</span>
+    <span>age:{{hero.age}}</span>
+    <input type="text" [(ngModel)]='hero.name'>
+</p>
+<p *ngIf='heroes.length<3'>there are less than 3 heroes</p>
