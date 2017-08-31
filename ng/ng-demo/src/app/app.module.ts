@@ -8,6 +8,7 @@ import { HeroParentComponent } from './hero-parent/hero-parent.component';
 import { HeroChildComponent } from './hero-child/hero-child.component';
 import { VoterComponent } from './voter/voter.component';
 import { VotetakerComponent } from './votetaker/votetaker.component';
+import {HighLightDirective} from './directive/highlight.directive'
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { VotetakerComponent } from './votetaker/votetaker.component';
     HeroParentComponent,
     HeroChildComponent,
     VoterComponent,
-    VotetakerComponent
+    VotetakerComponent,
+    HighLightDirective
   ],
   imports: [
     BrowserModule,

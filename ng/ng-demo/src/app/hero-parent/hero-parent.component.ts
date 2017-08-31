@@ -16,6 +16,7 @@ export class HeroParentComponent implements OnInit {
     new Hero('king',11),
     new Hero('jing',34)
   ]
-  master = 'John'
+  master = 'John';
+  color = 'blue'
 
 }
