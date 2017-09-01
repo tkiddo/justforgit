@@ -8,7 +8,8 @@ import { HeroParentComponent } from './hero-parent/hero-parent.component';
 import { HeroChildComponent } from './hero-child/hero-child.component';
 import { VoterComponent } from './voter/voter.component';
 import { VotetakerComponent } from './votetaker/votetaker.component';
-import {HighLightDirective} from './directive/highlight.directive'
+import {HighLightDirective} from './directive/highlight.directive';
+import {MyFormComponent} from './forms/my-form/my-form.component'
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {HighLightDirective} from './directive/highlight.directive'
     HeroChildComponent,
     VoterComponent,
     VotetakerComponent,
-    HighLightDirective
+    HighLightDirective,
+    MyFormComponent
   ],
   imports: [
     BrowserModule,
