@@ -1,10 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-    <h1>
-        Welcome to {{title}}!
-    </h1>
+<div>
+    <div *ngFor='let hero of heroes'>
+        <p>name:{{hero.name}}</p>
+        <p>age:{{hero.age}}</p>
+    </div>
 </div>
+
 <app-hero-list></app-hero-list>
 <app-hero-parent></app-hero-parent>
 <app-votetaker></app-votetaker>
-<app-my-form></app-my-form>
+<app-forms></app-forms>

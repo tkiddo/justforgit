@@ -9,7 +9,11 @@ import { HeroChildComponent } from './hero-child/hero-child.component';
 import { VoterComponent } from './voter/voter.component';
 import { VotetakerComponent } from './votetaker/votetaker.component';
 import {HighLightDirective} from './directive/highlight.directive';
-import {MyFormComponent} from './forms/my-form/my-form.component'
+import {HeroService} from './services/hero.service'
+// import {UserListComponent} from './forms/user-list/user-list.component'
+// import {UserService} from './services/user.service'
+
+import {MyFormsModule} from './forms/forms.module'
 
 @NgModule({
   declarations: [
@@ -19,14 +23,14 @@ import {MyFormComponent} from './forms/my-form/my-form.component'
     HeroChildComponent,
     VoterComponent,
     VotetakerComponent,
-    HighLightDirective,
-    MyFormComponent
+    HighLightDirective
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    MyFormsModule
   ],
-  providers: [],
+  providers: [HeroService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

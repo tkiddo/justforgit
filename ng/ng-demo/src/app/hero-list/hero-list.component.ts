@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Hero} from '../classes/Hero'
 import {Logger} from '../services/logger.service'
+import {HeroService} from '../services/hero.service'
 
 @Component({
   selector: 'app-hero-list',
@@ -12,11 +13,8 @@ import {Logger} from '../services/logger.service'
 export class HeroListComponent implements OnInit {
   heroes:Hero[]
 
-  constructor(private logger:Logger) {
-    this.heroes = [
-      new Hero('king',2),
-      new Hero('sting',34)
-    ]
+  constructor(private logger:Logger,private heroService:HeroService) {
+    this.heroes = heroService.getHeroes()
     
    }
 
