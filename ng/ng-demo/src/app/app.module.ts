@@ -13,7 +13,8 @@ import {HeroService} from './services/hero.service'
 // import {UserListComponent} from './forms/user-list/user-list.component'
 // import {UserService} from './services/user.service'
 
-import {MyFormsModule} from './forms/forms.module'
+import {MyFormsModule} from './forms/forms.module';
+import { CarComponent } from './car/car.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {MyFormsModule} from './forms/forms.module'
     HeroChildComponent,
     VoterComponent,
     VotetakerComponent,
-    HighLightDirective
+    HighLightDirective,
+    CarComponent
   ],
   imports: [
     BrowserModule,
