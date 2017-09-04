@@ -16,13 +16,17 @@ import {HeroService} from './services/hero.service'
 // import {UserService} from './services/user.service'
 
 import {MyFormsModule} from './forms/forms.module';
+import {FormsComponent} from './forms/forms.component'
 import { CarComponent } from './car/car.component';
 import { HttpComponent } from './http/http.component';
 
 const appRoutes:Routes = [
   {path:'herolist',component:HeroListComponent},
   {path:'heroparent',component:HeroParentComponent},
-  {path:'car',component:CarComponent}
+  {path:'car',component:CarComponent},
+  {path:'votaker',component:VotetakerComponent},
+  {path:'http',component:HttpComponent},
+  {path:'form',component:FormsComponent}
 ]
 
 @NgModule({
