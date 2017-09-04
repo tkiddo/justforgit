@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms'
 import {HttpClientModule} from '@angular/common/http'
-import {RouterModule,Routes} from '@angular/router'
+
 
 import { AppComponent } from './app.component';
 import { HeroListComponent } from './hero-list/hero-list.component';
@@ -20,14 +20,7 @@ import {FormsComponent} from './forms/forms.component'
 import { CarComponent } from './car/car.component';
 import { HttpComponent } from './http/http.component';
 
-const appRoutes:Routes = [
-  {path:'herolist',component:HeroListComponent},
-  {path:'heroparent',component:HeroParentComponent},
-  {path:'car',component:CarComponent},
-  {path:'votaker',component:VotetakerComponent},
-  {path:'http',component:HttpComponent},
-  {path:'form',component:FormsComponent}
-]
+import {RoutingModule} from './app-routing.module'
 
 @NgModule({
   declarations: [
@@ -46,10 +39,7 @@ const appRoutes:Routes = [
     FormsModule,
     MyFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(
-      appRoutes,
-      {enableTracing:true}
-    )
+    RoutingModule
   ],
   providers: [HeroService],
   bootstrap: [AppComponent]
