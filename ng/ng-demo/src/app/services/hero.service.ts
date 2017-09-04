@@ -1,15 +1,10 @@
-import {Hero} from '../classes/Hero'
-// import {Logger} from '../services/logger.service'
+import {Injectable} from  '@angular/core'
+import {HEROES} from '../hero-list/mock-hero'
 
+@Injectable()
 export class HeroService{
-    private heroes:Hero[];
-    constructor(){
-        this.heroes=[
-            new Hero('king',12),
-            new Hero('stan',34)
-        ]
-    }
+    
     getHeroes(){
-        return this.heroes
+        return HEROES
     }
 }

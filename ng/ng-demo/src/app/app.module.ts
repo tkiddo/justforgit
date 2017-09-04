@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms'
+import {HttpClientModule} from '@angular/common/http'
 
 import { AppComponent } from './app.component';
 import { HeroListComponent } from './hero-list/hero-list.component';
@@ -14,7 +15,9 @@ import {HeroService} from './services/hero.service'
 // import {UserService} from './services/user.service'
 
 import {MyFormsModule} from './forms/forms.module';
-import { CarComponent } from './car/car.component'
+import { CarComponent } from './car/car.component';
+import { HttpComponent } from './http/http.component';
+
 
 @NgModule({
   declarations: [
@@ -25,12 +28,14 @@ import { CarComponent } from './car/car.component'
     VoterComponent,
     VotetakerComponent,
     HighLightDirective,
-    CarComponent
+    CarComponent,
+    HttpComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    MyFormsModule
+    MyFormsModule,
+    HttpClientModule
   ],
   providers: [HeroService],
   bootstrap: [AppComponent]
