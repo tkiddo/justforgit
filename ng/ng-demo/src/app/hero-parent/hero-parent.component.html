@@ -1,5 +1,7 @@
 <div>
     <h1>app-hero-parent</h1>
     <h2 [HighLight]='color'>{{master}} controls {{heroes.length}} heroes</h2>
-    <app-hero-child *ngFor='let item of heroes' [hero]='item' [master]='master'></app-hero-child>
+    <div *ngFor='let item of heroes'>
+        {{item.name}}
+    </div>
 </div>
