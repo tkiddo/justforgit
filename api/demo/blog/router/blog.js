@@ -2,6 +2,13 @@ var express = require('express');
 var router = express.Router();
 var { userModel, blogModel } = require('../mongodb');
 
+router.get('/', (req, res) => {
+    blogModel.find({}).sort({ "_id": -1 }).exec((err, docs) => {
+        if (err) return res.json({ code: 0, msg: 'get blog error' });
+        res.json({ code: 1, msg: 'get blogs successfully', data: docs })
+    })
+})
+
 
 router.post('/add', (req, res) => {
     var username = req.session.username;
