@@ -9,6 +9,18 @@
     display: flex;
 }
 
+.fg {
+    flex: 1
+}
+
+.a-center {
+    align-items: center
+}
+
+.j-center {
+    justify-content: center
+}
+
 .active {
     color: red !important;
 }
