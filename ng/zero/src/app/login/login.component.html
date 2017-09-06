@@ -1,0 +1,19 @@
+<div>
+    <h1>app-login</h1>
+    <div>
+        <input type="text" #usernameRef>
+        <input type="password" #passwordRef>
+        <button (click)='onClick(usernameRef.value,passwordRef.value)'>Login</button>
+    </div>
+    <div>
+        <form #formRef='ngForm' (submit)='onSubmit(formRef.value)'>
+            <input type="text" name='username' [(ngModel)]='username' required #usernameRef2='ngModel' minlength="3">{{usernameRef2.errors | json}}
+            <div *ngIf='usernameRef2.errors?.required'>this is required</div>
+            <div *ngIf='usernameRef2.errors?.minlength'>should be at least 3 charactors</div>
+            <input type="password" name='password' [(ngModel)]='password' required #passwordRef2='ngModel'>{{passwordRef2.valid}}
+            <div *ngIf='passwordRef2.errors?.required'>this is required</div>
+            <button (click)='onClick2()'>Login</button>
+            <button type="submit">submit</button>
+        </form>
+    </div>
+</div>

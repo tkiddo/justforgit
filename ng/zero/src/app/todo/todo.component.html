@@ -1,0 +1,9 @@
+<div>
+    <h1>todo list</h1>
+    <input type="text" [(ngModel)]='desc' (keyup.enter)='addTodo()'>
+    <ul>
+        <li *ngFor='let item of todos'>
+            {{item.desc}}
+        </li>
+    </ul>
+</div>
