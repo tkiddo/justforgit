@@ -1,9 +1,16 @@
-<div>
-    <h1>todo list</h1>
-    <input type="text" [(ngModel)]='desc' (keyup.enter)='addTodo()'>
-    <ul>
-        <li *ngFor='let item of todos'>
-            {{item.desc}}
-        </li>
-    </ul>
-</div>
+<section class="todoapp">
+    <app-todo-header placeholder='what do you want' delay='400' (textChanges)='onTextChanges($event)' (onEnterUp)='addTodo()'></app-todo-header>
+    <section class="main" *ngIf="todos?.length > 0">
+        <input class="toggle-all" type="checkbox">
+        <ul class="todo-list">
+            <li *ngFor="let todo of todos" [class.completed]="todo.completed">
+                <div class="view">
+                    <input class="toggle" type="checkbox" (click)="toggleTodo(todo)" [checked]="todo.completed">
+                    <label (click)="toggleTodo(todo)">{{todo.desc}}</label>
+                    <button class="destroy" (click)="removeTodo(todo); $event.stopPropagation()"></button>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <app-todo-footer [itemCount]='todos?.length'></app-todo-footer>
+</section>
