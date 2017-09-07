@@ -11,6 +11,8 @@ import { LoginComponent } from '../app/login/login.component';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryTodoDbService } from './todo/todo.data';
 
+import {TstestModule} from './tstest/tstest.module'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +24,8 @@ import { InMemoryTodoDbService } from './todo/todo.data';
     appRouting,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryTodoDbService),
-    TodoModule
+    TodoModule,
+    TstestModule
   ],
   providers: [],
   bootstrap: [AppComponent]

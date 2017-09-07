@@ -14,6 +14,10 @@ export const routes:Routes=[
     {
         path:'todo',
         redirectTo:'todo'
+    },
+    {
+        path:'tstest',
+        redirectTo:'tstest'
     }
 ];
 
