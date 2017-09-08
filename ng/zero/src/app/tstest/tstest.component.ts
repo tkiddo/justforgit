@@ -28,4 +28,15 @@ export class TstestComponent implements OnInit {
     console.log(strLength)
   }
 
+  let(condition){
+    if(condition){
+      let value = 'blue';
+      return value
+    }else{
+      return null
+    }
+
+    // const name = 'sdf';
+  }
+
 }

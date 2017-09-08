@@ -223,7 +223,7 @@
                     console.log(data)
                     vm.$http.post(url, data).then(
                         (res) => {
-                            if (res.data.ret_code === 0) {
+                            if (res.data.code === 1) {
                                 vm.username = data.userName;
                                 vm.isLogined = true;
                                 vm.dialogVisible = false;
