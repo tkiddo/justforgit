@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../v3.15.1/css/ol.css" type="text/css">
+    <script src="../v3.15.1/build/ol.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="js-map"></div>
+    <div>
+        <h1>exporting GeoJson</h1>
+        <form>
+            <button type="submit">export layer</button>
+            <textarea name="" id="js-textarea" cols="30" rows="10"></textarea>
+        </form>
+    </div>
+    <script>
+        var map = new ol.Map({
+            view: new ol.View({
+                zoom: 5,
+                center: [2103547, 6538117]
+            }),
+            target: 'js-map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ]
+        });
+
+        // Create a methodfor randomly picking an integer from a range of integers, as follow
+        var getRandomInt = function(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        //Build an array of randomly generated circular features, as follows:
+        var features = [],
+            numberOfFeatures = 0;
+        while (numberOfFeatures < 10) {
+            var circle = new ol.geom.Circle(
+                ol.proj.fromLonLat(
+                    [getRandomInt(14, 23), getRandomInt(48, 54)]
+                ), getRandomInt(4, 15) * 10000
+            );
+            var polygonCircle = ol.geom.Polygon.fromCircle(circle);
+            features.push(new ol.Feature(polygonCircle));
+            numberOfFeatures++;
+        }
+        // Create the vector layer, add features to the vector source, and add this to map:
+        var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: features
+            })
+        });
+        map.addLayer(vectorLayer);
+        //Add a listener to the export button and export features as GeoJSON to the text box:
+        document.forms[0].addEventListener('submit', function(event) {
+            event.preventDefault();
+            var format = new ol.format.GeoJSON();
+            var features = vectorLayer.getSource().getFeatures();
+            var geoJson = format.writeFeatures(features);
+            document.getElementById('js-textarea').value = geoJson;
+            console.log(features)
+        });
+    </script>
+
+</body>
+
+</html>
