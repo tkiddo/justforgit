@@ -1,5 +1,5 @@
 var vectorSource = new ol.source.Vector({
-  url: 'data/geojson/countries.geojson',
+  url: 'http://localhost:3000/data/geojson/countries.geojson',
   format: new ol.format.GeoJSON()
 });
 
